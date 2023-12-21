@@ -4,17 +4,11 @@ import { Cafe } from './cafe.entity';
 import { ReviewImage } from './review-image.entity';
 import { User } from './user.entity';
 
-export enum UserRole {
-  ADMIN = 'ADMIN',
-  USER = 'USER',
-}
-
 @Entity()
 export class Review extends Base {
   @PrimaryGeneratedColumn()
   id: number;
 
-  // TODO: enum으로 값을 제한할지 고민해보기.
   @Column()
   rating: number;
 

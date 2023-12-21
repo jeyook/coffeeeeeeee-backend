@@ -44,6 +44,7 @@ export class Cafe extends Base {
   })
   homepageUrl: string;
 
-  @OneToMany(() => CafeTag, (cafeTag) => cafeTag.cafe, { cascade: true, lazy: true })
-  cafeTags: Promise<CafeTag[]>;
+  // TODO: lazy 로딩 나중에 고민하고 넣기
+  @OneToMany(() => CafeTag, (cafeTag) => cafeTag.cafe, { cascade: true })
+  cafeTags: CafeTag[];
 }

@@ -1,12 +1,7 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { Base } from './base.entity';
-
-// TODO: 프로바이더 값이 소문자였는지 기억이 안남.
-export enum Provider {
-  NAVER = 'naver',
-  KAKAO = 'kakao',
-  GOOGLE = 'google',
-}
+import { Provider } from './provider.entity';
+import { UserRole } from './user-role.entity';
 
 @Entity()
 export class User extends Base {
@@ -25,9 +20,11 @@ export class User extends Base {
   })
   socialId: string;
 
-  @Column({
-    type: 'enum',
-    enum: Provider,
-  })
+  @OneToOne(() => Provider)
+  @JoinColumn({ name: 'provider_id' })
   provider: Provider;
+
+  @OneToOne(() => UserRole)
+  @JoinColumn({ name: 'user_role_id' })
+  userRole: UserRole;
 }
