@@ -29,8 +29,8 @@ TOTAL_QUERIED_PLACES = 0
 TOTAL_DUPLICATIONS = 0
 
 # test를 위해 스탭을 크게 확장
-BOUNDARY_TOL = 0.01 # standard 0.001
-SCANNING_STEP = 0.015 # standard 0.0015
+BOUNDARY_TOL = 0.005 # standard 0.001
+SCANNING_STEP = 0.0075 # standard 0.0015
 
 
 def crawl_map_data(latitude, longitude):
