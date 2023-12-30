@@ -14,7 +14,7 @@ export class AuthController {
   @Get('/google/callback')
   @UseGuards(AuthGuard('google'))
   async googleAuthCallback(@Req() req: Request, @Res() res: Response) {
-    const data = this.authService.googleLogin(req);
+    const data = await this.authService.googleLogin(req);
     res.send({ data });
   }
 }
