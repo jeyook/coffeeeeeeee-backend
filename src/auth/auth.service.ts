@@ -10,13 +10,18 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async validateUser(email: string) {
-    const user = await this.userService.findOne(email);
-    return user;
-  }
-
-  googleLogin(req) {
-    if (!req.user) {
+  async googleLogin(
+    req: Request & {
+      user?: {
+        provider: string;
+        providerId: string;
+        name: string;
+        email: string;
+      };
+    },
+  ) {
+    const userData = req.user;
+    if (!userData) {
       // TODO: 적절한 예외처리
       return 'No user from google';
     }
@@ -24,9 +29,21 @@ export class AuthService {
     // TODO: 유저 확인
     // 유저 없으면 등록 후 리턴
     // 유저 있으면 유저 정보 리턴
+    // 을 여기서 하는게 맞나?
+    let user = await this.userService.findUserByEmail(userData.email);
+    if (!user) {
+      const userSignUpDto = {
+        email: userData.email,
+        providerName: userData.provider,
+        socialId: userData.providerId,
+        nickname: userData.name,
+      };
+      user = await this.userService.signUpOAuth(userSignUpDto);
+    }
+
+    const token = this.sign({ aud: user.id });
     return {
-      message: 'User information from google',
-      user: req.user,
+      token: token,
     };
   }
 
