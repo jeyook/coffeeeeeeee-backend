@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Provider } from 'src/entity/provider.entity';
 import { UserRole } from 'src/entity/user-role.entity';
 import { User } from 'src/entity/user.entity';
-import { UserSignUpDto } from 'src/type/userSignUpDto';
+import { UserSignUpDto } from 'src/type/userDto';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -27,7 +27,7 @@ export class UserService {
   }
 
   async signUpOAuth(userSignUpDto: UserSignUpDto) {
-    const { email, nickname, providerName, socialId } = userSignUpDto;
+    const { providerName } = userSignUpDto;
     const userRole = await this.userRoleRepository.findOne({
       where: {
         role: 'user',
@@ -38,12 +38,11 @@ export class UserService {
         name: providerName,
       },
     });
-    const user = new User();
-    user.provider = provider;
-    user.email = email;
-    user.nickname = nickname;
-    user.socialId = socialId;
-    user.userRole = userRole;
+    const user = this.userRepository.create({
+      ...userSignUpDto,
+      userRole: userRole,
+      provider: provider,
+    });
     return await this.userRepository.save(user);
   }
 }

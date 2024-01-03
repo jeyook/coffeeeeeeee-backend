@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { TokenPayload } from 'src/type/token-payload';
+import { GoogleOAuthUserDto } from 'src/type/userDto';
 import { UserService } from 'src/user/user.service';
 
 @Injectable()
@@ -10,17 +11,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async googleLogin(
-    req: Request & {
-      user?: {
-        provider: string;
-        providerId: string;
-        name: string;
-        email: string;
-      };
-    },
-  ) {
-    const userData = req.user;
+  async googleLogin(userData: GoogleOAuthUserDto) {
     if (!userData) {
       // TODO: 적절한 예외처리
       return 'No user from google';
