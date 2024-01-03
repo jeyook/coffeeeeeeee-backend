@@ -1,4 +1,4 @@
-import csv
+import json
 import random
 import time
 import requests
@@ -16,14 +16,12 @@ LONG_HIGH = 127.20821726799363
 # LONG_LOW = 127.00157521546801
 # LONG_HIGH = 127.01721726799363 
 
-RESULT_FILE = "data.csv"
+RESULT_FILE = "data.json"
 
-with open(RESULT_FILE, 'r', encoding='utf-8') as file:
-    rdr = csv.reader(file)
-    for line in rdr:
-        if line[2] != "id":
-            RESULT[line[2]] = True
-            # TODO: 위도 경도 값을 LAT_LOW랑 LONG_LOW로 저장해서 이미 크롤링 한 부분은 스킵하도록 구성
+with open(RESULT_FILE, "r") as json_file:
+    result = json.load(json_file)
+    for item in result['data']:
+        RESULT[item['id']] = True
 
 TOTAL_QUERIED_PLACES = 0
 TOTAL_DUPLICATIONS = 0
@@ -53,8 +51,6 @@ def crawl_map_data(latitude, longitude):
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
         'Accept': 'application/json, text/plain, */*',
         'Referer': f'https://map.naver.com/p/search/%EC%B9%B4%ED%8E%98?c=15.00,0,0,0,dh',
-        # Add other headers as needed
-        # TODO: add more detailed headers
         'authority': "map.naver.com",
         "method": "GET",
         "scheme": "https",
@@ -92,23 +88,16 @@ def crawl_map_data(latitude, longitude):
     TOTAL_QUERIED_PLACES += datalength
     TOTAL_DUPLICATIONS += duplications
 
-def record(output_file, data):
-    with open(output_file, 'r') as f:    
-        lines = f.readlines()
-        
-        with open(output_file,'a') as write_file:
-            if lines == []:
-                keys_str = ""
-                for key in data.keys():
-                    keys_str += str(key)+","
-                print(keys_str, file=write_file)
-            values_str = ""
-            for value in data.values():
-                values_str += str(value)+","
-            print(values_str, file=write_file)
+def record(filename, new_data):
+    with open(filename,'r+') as file:
+        file_data = json.load(file)
+        file_data["data"].append(new_data)
+        # Sets file's current position at offset.
+        file.seek(0)
+        # convert back to json.
+        json.dump(file_data, file, indent = 2)
 
 if __name__ == "__main__":
-    # Example coordinates (replace with your desired coordinates)
     latitude = LAT_LOW
     longitude = LONG_LOW
     # 시작 좌표로부터 최대값까지 사각형을 다 훑는 로직으로 변경
@@ -120,6 +109,7 @@ if __name__ == "__main__":
             time.sleep(random.random() + 0.5)
             if random.random() > 0.5 and random.random() > 0.5:
                 time.sleep(random.random() + 0.3)
+        # 하나의 위도값에서 스캔이 끝나면 경도 초기와, 위도 한 단계 증가
         longitude = LONG_LOW
         latitude += SCANNING_STEP
 
