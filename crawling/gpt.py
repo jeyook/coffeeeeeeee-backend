@@ -1,3 +1,4 @@
+import os
 import json
 import random
 import time
@@ -17,6 +18,16 @@ LONG_HIGH = 127.20821726799363
 # LONG_HIGH = 127.01721726799363 
 
 RESULT_FILE = "data.json"
+
+# 파일이 없는 경우 생성, 파일이 있지만 비어있거나 dict로 가져오지 못하는 경우 다시 작성
+if not os.path.exists(RESULT_FILE):
+    with open(RESULT_FILE, "w") as json_file:
+        json_file.write('{ "data" : [] }')
+else:
+    with open(RESULT_FILE, "r+") as json_file:
+        result = json.load(json_file)
+        if type(result) != dict:
+            json_file.write('{ "data" : [] }')
 
 with open(RESULT_FILE, "r") as json_file:
     result = json.load(json_file)
