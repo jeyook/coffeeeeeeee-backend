@@ -18,7 +18,7 @@ export class ReviewController {
     @UploadedFiles() images: Express.MulterS3.File[],
     @Body() dto: CreateReviewDto,
   ): Promise<CommonResponseDto<void>> {
-    // 임시
+    // TODO: JWT 완성되면 지우기
     const user = new User();
     user.id = 1;
     user.email = 'test@example.com';
