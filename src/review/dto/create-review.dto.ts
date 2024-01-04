@@ -3,7 +3,7 @@ import { ReviewImage } from 'src/entity/review-image.entity';
 import { Review } from 'src/entity/review.entity';
 import { User } from 'src/entity/user.entity';
 
-export class ReviewCreateDto {
+export class CreateReviewDto {
   readonly rating: number;
 
   readonly content: string;

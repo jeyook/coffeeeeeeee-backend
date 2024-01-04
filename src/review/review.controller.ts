@@ -3,7 +3,7 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { User } from 'src/entity/user.entity';
 import { CommonResponseDto } from '../common/dto/common-response.dto';
 import { ResponseMessage } from '../common/dto/response-message.enum';
-import { ReviewCreateDto } from './dto/review-create.dto';
+import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewService } from './review.service';
 
 // TODO: 엔드포인트 고민
@@ -16,7 +16,7 @@ export class ReviewController {
   async createReview(
     @Param('placeId') placeId: number,
     @UploadedFiles() images: Express.MulterS3.File[],
-    @Body() dto: ReviewCreateDto,
+    @Body() dto: CreateReviewDto,
   ): Promise<CommonResponseDto<void>> {
     // 임시
     const user = new User();

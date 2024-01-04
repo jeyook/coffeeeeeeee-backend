@@ -4,7 +4,7 @@ import { Cafe } from 'src/entity/cafe.entity';
 import { Review } from 'src/entity/review.entity';
 import { User } from 'src/entity/user.entity';
 import { Repository } from 'typeorm';
-import { ReviewCreateDto } from './dto/review-create.dto';
+import { CreateReviewDto } from './dto/create-review.dto';
 
 @Injectable()
 export class ReviewService {
@@ -16,7 +16,7 @@ export class ReviewService {
   async createReview(
     placeId: number,
     images: Express.MulterS3.File[],
-    dto: ReviewCreateDto,
+    dto: CreateReviewDto,
     user: User,
   ): Promise<void> {
     const cafe = await this.cafeRepository.findOneBy({ id: placeId });
