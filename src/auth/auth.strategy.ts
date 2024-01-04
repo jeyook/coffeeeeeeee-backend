@@ -46,7 +46,7 @@ export class GoogleOAuthStrategy extends PassportStrategy(Strategy, 'google') {
       const userRole = await this.userRoleRepository.findOne({
         where: { role: 'user' },
       });
-      user = await this.userService.signUpOAuth(userData.toEntity(provider, userRole));
+      user = await this.userService.signUpOAuth(userData, provider, userRole);
     }
 
     const token = this.authService.sign({ aud: user.id });
