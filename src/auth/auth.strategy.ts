@@ -3,12 +3,21 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy, Profile, VerifyCallback } from 'passport-google-oauth20';
 import { AuthService } from './auth.service';
 import { UserService } from 'src/user/user.service';
+import { OAuthUserDto } from './dto/auth-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { UserRole } from 'src/entity/user-role.entity';
+import { Provider } from 'src/entity/provider.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class GoogleOAuthStrategy extends PassportStrategy(Strategy, 'google') {
   constructor(
     private authService: AuthService,
     private userService: UserService,
+    @InjectRepository(UserRole)
+    private userRoleRepository: Repository<UserRole>,
+    @InjectRepository(Provider)
+    private providerRepository: Repository<Provider>,
   ) {
     super({
       clientID: process.env.OAUTH_GOOGLE_CLIENT_ID,
@@ -30,13 +39,14 @@ export class GoogleOAuthStrategy extends PassportStrategy(Strategy, 'google') {
 
     let user = await this.userService.findUserByEmail(email);
     if (!user) {
-      const userSignUpDto = {
-        email: email,
-        providerName: 'google',
-        socialId: id,
-        nickname: name.givenName,
-      };
-      user = await this.userService.signUpOAuth(userSignUpDto);
+      const userData = new OAuthUserDto(email, name.givenName, 'google', id);
+      const provider = await this.providerRepository.findOne({
+        where: { name: userData.providerName },
+      });
+      const userRole = await this.userRoleRepository.findOne({
+        where: { role: 'user' },
+      });
+      user = await this.userService.signUpOAuth(userData.toEntity(provider, userRole));
     }
 
     const token = this.authService.sign({ aud: user.id });

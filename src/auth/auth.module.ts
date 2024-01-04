@@ -6,9 +6,14 @@ import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { GoogleOAuthStrategy } from './auth.strategy';
 import { PassportModule } from '@nestjs/passport';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { User } from 'src/entity/user.entity';
+import { UserRole } from 'src/entity/user-role.entity';
+import { Provider } from 'src/entity/provider.entity';
 
 @Module({
   imports: [
+    TypeOrmModule.forFeature([User, UserRole, Provider]),
     PassportModule,
     UserModule,
     JwtModule.registerAsync({
