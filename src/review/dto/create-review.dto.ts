@@ -1,8 +1,10 @@
-import { IsNotEmpty, MaxLength } from 'class-validator';
-import { Cafe } from 'src/entity/cafe.entity';
-import { ReviewImage } from 'src/entity/review-image.entity';
-import { Review } from 'src/entity/review.entity';
-import { User } from 'src/entity/user.entity';
+import { ArrayMaxSize, ArrayMinSize, IsArray, IsNotEmpty, MaxLength } from 'class-validator';
+import { Cafe } from '../../entity/cafe.entity';
+import { ReviewImage } from '../../entity/review-image.entity';
+import { ReviewTag } from '../../entity/review-tag.entity';
+import { Review } from '../../entity/review.entity';
+import { Tag } from '../../entity/tag.entity';
+import { User } from '../../entity/user.entity';
 
 export class CreateReviewDto {
   @IsNotEmpty()
@@ -12,12 +14,25 @@ export class CreateReviewDto {
   @MaxLength(500)
   readonly content: string;
 
-  toEntity(cafe: Cafe, user: User, images: Express.MulterS3.File[]): Review {
+  // TODO: 태그 최대, 최소 얼마나?
+  @IsArray()
+  @ArrayMaxSize(2)
+  @ArrayMinSize(2)
+  readonly tagIds: number[];
+
+  toEntity(cafe: Cafe, user: User, images: Express.MulterS3.File[], tags: Tag[]): Review {
     const reviewImages = images.map((image) => {
       const reviewImage = new ReviewImage();
       reviewImage.url = image.location;
 
       return reviewImage;
+    });
+
+    const reviewTags = tags.map((tag) => {
+      const reviewTag = new ReviewTag();
+      reviewTag.tag = tag;
+
+      return reviewTag;
     });
 
     const review = new Review();
@@ -26,6 +41,7 @@ export class CreateReviewDto {
     review.cafe = cafe;
     review.user = user;
     review.reviewImages = reviewImages;
+    review.reviewTags = reviewTags;
 
     return review;
   }
