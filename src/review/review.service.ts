@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Cafe } from 'src/entity/cafe.entity';
 import { Review } from 'src/entity/review.entity';
@@ -20,6 +20,7 @@ export class ReviewService {
     user: User,
   ): Promise<void> {
     const cafe = await this.cafeRepository.findOneBy({ id: placeId });
+    if (!cafe) throw new NotFoundException('NOT_FOUND_CAFE');
 
     const review = dto.toEntity(cafe, user, images);
 

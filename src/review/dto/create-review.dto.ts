@@ -1,11 +1,15 @@
+import { IsNotEmpty, MaxLength } from 'class-validator';
 import { Cafe } from 'src/entity/cafe.entity';
 import { ReviewImage } from 'src/entity/review-image.entity';
 import { Review } from 'src/entity/review.entity';
 import { User } from 'src/entity/user.entity';
 
 export class CreateReviewDto {
+  @IsNotEmpty()
   readonly rating: number;
 
+  @IsNotEmpty()
+  @MaxLength(500)
   readonly content: string;
 
   toEntity(cafe: Cafe, user: User, images: Express.MulterS3.File[]): Review {

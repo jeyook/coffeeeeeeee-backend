@@ -1,4 +1,5 @@
 import { S3Client } from '@aws-sdk/client-s3';
+import { UnprocessableEntityException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import * as multerS3 from 'multer-s3';
@@ -27,6 +28,13 @@ export const multerOptionsFactory = async (
     }),
     limits: {
       fileSize: 10 * 1024 * 1024,
+    },
+    fileFilter: (req, file, cb) => {
+      const extRegExp = /.(png|jpeg|jpg)/;
+      const ext = extname(file.originalname);
+      if (extRegExp.exec(ext)) return cb(null, true);
+
+      return cb(new UnprocessableEntityException('NOT_IMAGE_FILES'), false);
     },
   };
 };

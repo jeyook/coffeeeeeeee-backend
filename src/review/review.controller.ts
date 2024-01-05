@@ -1,6 +1,16 @@
-import { Body, Controller, Param, Post, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Param,
+  Post,
+  UploadedFiles,
+  UseFilters,
+  UseInterceptors,
+} from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { User } from 'src/entity/user.entity';
+import { ReviewExceptionFilter } from 'src/filter/review-exception.filter';
 import { CommonResponseDto } from '../common/dto/common-response.dto';
 import { ResponseMessage } from '../common/dto/response-message.enum';
 import { CreateReviewDto } from './dto/create-review.dto';
@@ -13,6 +23,7 @@ export class ReviewController {
 
   @Post('/:placeId/review')
   @UseInterceptors(FilesInterceptor('images'))
+  @UseFilters(new ReviewExceptionFilter(new ConfigService()))
   async createReview(
     @Param('placeId') placeId: number,
     @UploadedFiles() images: Express.MulterS3.File[],
