@@ -25,8 +25,8 @@ export class ReviewService {
     if (!cafe) throw new NotFoundException('NOT_FOUND_CAFE');
 
     const tags = await Promise.all(
-      dto.tagIds.map((tagId) => {
-        const tag = this.tagRepository.findOneBy({ id: tagId });
+      dto.tagIds.map(async (tagId) => {
+        const tag = await this.tagRepository.findOneBy({ id: tagId });
         if (!tag) throw new NotFoundException('NOT_FOUND_TAG');
 
         return tag;
