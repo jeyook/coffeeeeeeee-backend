@@ -20,6 +20,7 @@ import { PlaceModule } from './place/place.module';
       database: process.env.DB_NAME,
       entities: [__dirname + '/../**/*.entity.{js, ts}'],
       synchronize: true,
+      logging: true,
     }),
     UserModule,
     PlaceModule,
