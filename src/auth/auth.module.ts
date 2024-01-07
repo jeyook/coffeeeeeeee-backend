@@ -1,15 +1,17 @@
 import { Module } from '@nestjs/common';
-import { AuthService } from './auth.service';
-import { AuthController } from './auth.controller';
-import { UserModule } from 'src/user/user.module';
 import { JwtModule } from '@nestjs/jwt';
-import { ConfigModule, ConfigService } from '@nestjs/config';
-import { GoogleOAuthStrategy } from './auth.strategy';
 import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+
 import { User } from 'src/entity/user.entity';
 import { UserRole } from 'src/entity/user-role.entity';
 import { Provider } from 'src/entity/provider.entity';
+
+import { UserModule } from 'src/user/user.module';
+import { AuthService } from './auth.service';
+import { AuthController } from './auth.controller';
+import { GoogleOAuthStrategy } from './auth.strategy';
 
 @Module({
   imports: [
