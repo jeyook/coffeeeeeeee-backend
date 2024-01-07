@@ -7,7 +7,6 @@ import {
   UseFilters,
   UseInterceptors,
 } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { User } from 'src/entity/user.entity';
 import { ReviewExceptionFilter } from 'src/filter/review-exception.filter';
@@ -23,7 +22,7 @@ export class ReviewController {
 
   @Post('/:placeId/review')
   @UseInterceptors(FilesInterceptor('images'))
-  @UseFilters(new ReviewExceptionFilter(new ConfigService()))
+  @UseFilters(ReviewExceptionFilter)
   async createReview(
     @Param('placeId') placeId: number,
     @UploadedFiles() images: Express.MulterS3.File[],

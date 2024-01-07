@@ -5,10 +5,7 @@ import { Request, Response } from 'express';
 
 @Catch(HttpException)
 export class ReviewExceptionFilter implements ExceptionFilter {
-  private readonly configService: ConfigService;
-  constructor(configService: ConfigService) {
-    this.configService = configService;
-  }
+  constructor(private readonly configService: ConfigService) {}
 
   async catch(exception: HttpException, host: ArgumentsHost) {
     const ctx = host.switchToHttp();

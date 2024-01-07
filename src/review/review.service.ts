@@ -10,9 +10,12 @@ import { CreateReviewDto } from './dto/create-review.dto';
 @Injectable()
 export class ReviewService {
   constructor(
-    @InjectRepository(Review) private readonly reviewRepository: Repository<Review>,
-    @InjectRepository(Cafe) private readonly cafeRepository: Repository<Cafe>,
-    @InjectRepository(Tag) private readonly tagRepository: Repository<Tag>,
+    @InjectRepository(Review)
+    private readonly reviewRepository: Repository<Review>,
+    @InjectRepository(Cafe)
+    private readonly cafeRepository: Repository<Cafe>,
+    @InjectRepository(Tag)
+    private readonly tagRepository: Repository<Tag>,
   ) {}
 
   async createReview(
