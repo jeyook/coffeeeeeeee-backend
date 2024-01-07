@@ -2,6 +2,7 @@ import {
   Body,
   Controller,
   Param,
+  ParseIntPipe,
   Post,
   UploadedFiles,
   UseFilters,
@@ -24,7 +25,7 @@ export class ReviewController {
   @UseInterceptors(FilesInterceptor('images'))
   @UseFilters(ReviewExceptionFilter)
   async createReview(
-    @Param('placeId') placeId: number,
+    @Param('placeId', ParseIntPipe) placeId: number,
     @UploadedFiles() images: Express.MulterS3.File[],
     @Body() dto: CreateReviewDto,
   ): Promise<CommonResponseDto<void>> {
