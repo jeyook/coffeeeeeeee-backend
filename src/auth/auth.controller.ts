@@ -3,7 +3,7 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { Response } from 'express';
 
-import { OAuthUserData } from './decorator/OAuthUserData.decorator';
+import { OAuthUserData } from './decorator/oauth-user-data.decorator';
 import { OAuthUserDto } from './dto/auth-user.dto';
 
 @Controller('/auth')
