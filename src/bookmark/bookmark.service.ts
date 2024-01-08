@@ -9,9 +9,8 @@ import { User } from 'src/entity/user.entity';
 @Injectable()
 export class BookmarkService {
   constructor(
-    @InjectRepository(Bookmark)
-    private readonly bookmarkRepository: Repository<Bookmark>,
     @InjectRepository(Cafe) private readonly cafeRepository: Repository<Cafe>,
+    @InjectRepository(Bookmark) private readonly bookmarkRepository: Repository<Bookmark>,
   ) {}
 
   async getAll() {
