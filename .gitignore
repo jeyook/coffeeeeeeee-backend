@@ -34,5 +34,6 @@ lerna-debug.log*
 !.vscode/launch.json
 !.vscode/extensions.json
 .vscode
+
+backlog
 .env
-backlog/client_secret_909079772082-u2g9re04qhnvvjf7n2pccuvcg59oisn1.apps.googleusercontent.com.json
