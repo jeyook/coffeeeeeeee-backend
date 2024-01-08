@@ -19,12 +19,12 @@ export class ReviewService {
   ) {}
 
   async createReview(
-    placeId: number,
+    cafeId: number,
     images: Express.MulterS3.File[],
     dto: CreateReviewDto,
     user: User,
   ): Promise<void> {
-    const cafe = await this.cafeRepository.findOneBy({ id: placeId });
+    const cafe = await this.cafeRepository.findOneBy({ id: cafeId });
     if (!cafe) throw new NotFoundException('NOT_FOUND_CAFE');
 
     const tags = await Promise.all(

@@ -16,16 +16,15 @@ import { ResponseMessage } from '../common/dto/response-message.enum';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewService } from './review.service';
 
-// TODO: 엔드포인트 고민
-@Controller('/place')
+@Controller('/cafe')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
-  @Post('/:placeId/review')
+  @Post('/:cafeId/review')
   @UseInterceptors(FilesInterceptor('images'))
   @UseFilters(ReviewExceptionFilter)
   async createReview(
-    @Param('placeId', ParseIntPipe) placeId: number,
+    @Param('cafeId', ParseIntPipe) cafeId: number,
     @UploadedFiles() images: Express.MulterS3.File[],
     @Body() dto: CreateReviewDto,
   ): Promise<CommonResponseDto<void>> {
@@ -35,7 +34,7 @@ export class ReviewController {
     user.email = 'test@example.com';
     user.nickname = 'test-user';
 
-    await this.reviewService.createReview(placeId, images, dto, user);
+    await this.reviewService.createReview(cafeId, images, dto, user);
 
     return CommonResponseDto.successNoContent(ResponseMessage.CREATE_SUCCESS);
   }
