@@ -17,8 +17,9 @@ export class BookmarkService {
     return await this.bookmarkRepository.find();
   }
 
-  async createBookmark(user: User, bookmarkDto: BookmarkCreateDto): Promise<void> {
-    const cafe = await this.cafeRepository.findOneBy({ id: bookmarkDto.post_id });
+  async createBookmark(user: User, cafeId): Promise<void> {
+    const bookmarkDto = new BookmarkCreateDto();
+    const cafe = await this.cafeRepository.findOneBy({ id: cafeId });
     const bookmark = bookmarkDto.toEntity(cafe, user);
     await this.bookmarkRepository.save(bookmark);
   }
