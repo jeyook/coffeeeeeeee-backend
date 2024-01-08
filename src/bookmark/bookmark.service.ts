@@ -13,7 +13,7 @@ export class BookmarkService {
     @InjectRepository(Bookmark) private readonly bookmarkRepository: Repository<Bookmark>,
   ) {}
 
-  async getAll() {
+  async getAllBookmark() {
     return await this.bookmarkRepository.find();
   }
 
