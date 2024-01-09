@@ -13,7 +13,7 @@ export class AuthGuard implements CanActivate {
     try {
       const decoded = this.authService.verify(token!);
       const userId = decoded.aud;
-      req.user = userId;
+      req.userId = userId;
       return true;
     } catch (error) {
       return false;
