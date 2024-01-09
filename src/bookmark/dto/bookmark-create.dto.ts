@@ -3,8 +3,8 @@ import { Cafe } from 'src/entity/cafe.entity';
 import { User } from 'src/entity/user.entity';
 
 export class BookmarkCreateDto {
-  user_id: number;
-  post_id: number;
+  readonly user_id: number;
+  readonly cafe_id: number;
 
   toEntity(cafe: Cafe, user: User): Bookmark {
     const bookmark = new Bookmark();

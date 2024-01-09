@@ -9,13 +9,13 @@ export class BookmarkController {
   async getBookmark() {}
 
   @Post()
-  async createBookmark(@Body() body) {
+  async createBookmark(@Body('cafeId') cafeId: number) {
     // TODO: JWT 완성되면 지우기
     const user = new User();
     user.id = 1;
     user.email = 'test@example.com';
     user.nickname = 'test-user';
 
-    await this.bookmarkService.createBookmark(user, body.cafeId);
+    await this.bookmarkService.createBookmark(user, cafeId);
   }
 }
