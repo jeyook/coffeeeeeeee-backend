@@ -12,7 +12,7 @@ import { UserModule } from 'src/user/user.module';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { GoogleOAuthStrategy } from './google-oauth.strategy';
-import { ServiceAuthStrategy } from './service-auth.strategy';
+import { TokenAuthStrategy } from './token-auth.strategy';
 
 @Module({
   imports: [
@@ -29,7 +29,7 @@ import { ServiceAuthStrategy } from './service-auth.strategy';
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthService, GoogleOAuthStrategy, ServiceAuthStrategy],
+  providers: [AuthService, GoogleOAuthStrategy, TokenAuthStrategy],
   controllers: [AuthController],
   exports: [AuthService],
 })
