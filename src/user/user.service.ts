@@ -7,7 +7,7 @@ import { Provider } from 'src/entity/provider.entity';
 import { UserRole } from 'src/entity/user-role.entity';
 import { User } from 'src/entity/user.entity';
 
-import { OAuthUserDto } from 'src/auth/dto/auth-user.dto';
+import { OAuthUserDto } from 'src/auth/dto/oauth-user.dto';
 
 @Injectable()
 export class UserService {
