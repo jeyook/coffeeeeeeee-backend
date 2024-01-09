@@ -1,7 +1,7 @@
 import { Controller, Get, Param, ParseIntPipe, UseFilters } from '@nestjs/common';
 import { PlaceService } from './place.service';
-import { CommonResponseDto } from 'src/common/common-response.dto';
-import { ResponseMessage } from 'src/common/response-message.enum';
+import { CommonResponseDto } from '../common/dto/common-response.dto';
+import { ResponseMessage } from '../common/dto/response-message.enum';
 import { Cafe } from '../entity/cafe.entity';
 import { PlaceExceptionFilter } from 'src/filter/place-exception.filter';
 import { ApiCreatedResponse, ApiForbiddenResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
