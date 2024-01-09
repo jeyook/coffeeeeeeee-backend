@@ -50,7 +50,6 @@ export class PlaceController {
     @Param('placeId', ParseIntPipe) placeId: number, //transform true
   ): Promise<CommonResponseDto<Cafe>> {
     const data = await this.placeService.getPlaceById(placeId);
-    console.log('data', data);
     return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, data);
   }
 }
