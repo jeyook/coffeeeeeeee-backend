@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Bookmark } from 'src/entity/bookmark.entity';
-import { BookmarkCreateDto } from './dto/bookmark-create.dto';
+import { CreateBookmarkDto } from './dto/bookmark-create.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Cafe } from 'src/entity/cafe.entity';
@@ -18,7 +18,7 @@ export class BookmarkService {
   }
 
   async createBookmark(user: User, cafeId: number): Promise<void> {
-    const bookmarkDto = new BookmarkCreateDto();
+    const bookmarkDto = new CreateBookmarkDto();
     const cafe = await this.cafeRepository.findOneBy({ id: cafeId });
     const bookmark = bookmarkDto.toEntity(cafe, user);
     await this.bookmarkRepository.save(bookmark);

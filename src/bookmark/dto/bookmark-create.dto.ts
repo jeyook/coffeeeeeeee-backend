@@ -2,7 +2,7 @@ import { Bookmark } from 'src/entity/bookmark.entity';
 import { Cafe } from 'src/entity/cafe.entity';
 import { User } from 'src/entity/user.entity';
 
-export class BookmarkCreateDto {
+export class CreateBookmarkDto {
   readonly userId: number;
   readonly cafeId: number;
 
