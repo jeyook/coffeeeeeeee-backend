@@ -11,7 +11,8 @@ import { Provider } from 'src/entity/provider.entity';
 import { UserModule } from 'src/user/user.module';
 import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
-import { GoogleOAuthStrategy } from './auth.strategy';
+import { GoogleOAuthStrategy } from './google-oauth.strategy';
+import { ServiceAuthStrategy } from './service-auth.strategy';
 
 @Module({
   imports: [
@@ -28,7 +29,7 @@ import { GoogleOAuthStrategy } from './auth.strategy';
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthService, GoogleOAuthStrategy],
+  providers: [AuthService, GoogleOAuthStrategy, ServiceAuthStrategy],
   controllers: [AuthController],
   exports: [AuthService],
 })

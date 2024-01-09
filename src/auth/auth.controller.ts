@@ -3,8 +3,8 @@ import { AuthGuard } from '@nestjs/passport';
 
 import { Response } from 'express';
 
-import { OAuthUserData } from './decorator/oauth-user-data.decorator';
-import { OAuthUserDto } from './dto/auth-user.dto';
+import { AuthUserData } from './decorator/auth-user-data.decorator';
+import { OAuthUserDto } from './dto/oauth-user.dto';
 
 @Controller('/auth')
 export class AuthController {
@@ -15,7 +15,7 @@ export class AuthController {
   @Get('/google/callback')
   @UseGuards(AuthGuard('google'))
   async googleAuthCallback(
-    @OAuthUserData() user: OAuthUserDto & { token: string },
+    @AuthUserData() user: OAuthUserDto & { token: string },
     @Res() res: Response,
   ) {
     res.send({ data: user });
