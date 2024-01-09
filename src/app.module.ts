@@ -1,5 +1,6 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -25,6 +26,7 @@ import { UserModule } from './user/user.module';
     }),
     UserModule,
     AuthModule,
+    PassportModule,
     ReviewModule,
   ],
   controllers: [AppController, AuthController],
