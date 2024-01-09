@@ -18,6 +18,7 @@ export class AuthController {
     @AuthUserData() user: OAuthUserDto & { token: string },
     @Res() res: Response,
   ) {
+    // TODO: COF-16 머지 후 response 형식 적용
     res.send({ data: user });
   }
 }
