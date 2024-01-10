@@ -10,32 +10,30 @@ import { CreateReviewDto } from './dto/create-review.dto';
 @Injectable()
 export class ReviewService {
   constructor(
-    @InjectRepository(Review)
-    private readonly reviewRepository: Repository<Review>,
-    @InjectRepository(Cafe)
-    private readonly cafeRepository: Repository<Cafe>,
-    @InjectRepository(Tag)
-    private readonly tagRepository: Repository<Tag>,
+    @InjectRepository(Review) private readonly reviewRepository: Repository<Review>,
+    @InjectRepository(Cafe) private readonly cafeRepository: Repository<Cafe>,
+    @InjectRepository(Tag) private readonly tagRepository: Repository<Tag>,
   ) {}
 
   async createReview(
+    user: User,
     cafeId: number,
     images: Express.MulterS3.File[],
     dto: CreateReviewDto,
-    user: User,
   ): Promise<void> {
-    const cafe = await this.cafeRepository.findOneBy({ id: cafeId });
-    if (!cafe) throw new NotFoundException('NOT_FOUND_CAFE');
+    const foundCafe = await this.cafeRepository.findOneBy({ id: cafeId });
+    if (!foundCafe) throw new NotFoundException('NOT_FOUND_CAFE');
 
-    const tags = await Promise.all(
+    const foundTags = await Promise.all(
       dto.tagIds.map(async (tagId) => {
-        const tag = await this.tagRepository.findOneBy({ id: tagId });
-        if (!tag) throw new NotFoundException('NOT_FOUND_TAG');
+        const foundTag = await this.tagRepository.findOneBy({ id: tagId });
+        if (!foundTag) throw new NotFoundException('NOT_FOUND_TAG');
 
-        return tag;
+        return foundTag;
       }),
     );
-    const review = dto.toEntity(cafe, user, images, tags);
+
+    const review = dto.toEntity(user, foundCafe, images, foundTags);
 
     await this.reviewRepository.save(review);
   }

@@ -20,7 +20,7 @@ export class CreateReviewDto {
   @ArrayMinSize(2)
   readonly tagIds: number[];
 
-  toEntity(cafe: Cafe, user: User, images: Express.MulterS3.File[], tags: Tag[]): Review {
+  toEntity(user: User, cafe: Cafe, images: Express.MulterS3.File[], tags: Tag[]): Review {
     const reviewImages = images.map((image) => {
       const reviewImage = new ReviewImage();
       reviewImage.url = image.location;
