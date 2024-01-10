@@ -43,6 +43,7 @@ export class UserService {
   }
 
   async signUpOAuth(userData: OAuthUserDto, provider: Provider, userRole: UserRole) {
-    return await this.userRepository.save(userData.toEntity(provider, userRole));
+    const user = userData.toEntity(provider, userRole);
+    return await this.userRepository.save(user);
   }
 }
