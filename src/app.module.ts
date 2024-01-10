@@ -8,6 +8,7 @@ import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { ReviewModule } from './review/review.module';
 import { UserModule } from './user/user.module';
+import { BookmarkModule } from './bookmark/bookmark.module';
 
 @Module({
   imports: [
@@ -28,6 +29,7 @@ import { UserModule } from './user/user.module';
     AuthModule,
     PassportModule,
     ReviewModule,
+    BookmarkModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService],
