@@ -1,12 +1,17 @@
 import { PassportStrategy } from '@nestjs/passport';
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
+import { UserService } from 'src/user/user.service';
+import { User } from 'src/entity/user.entity';
 
 @Injectable()
 export class TokenAuthStrategy extends PassportStrategy(Strategy) {
-  constructor(private readonly configService: ConfigService) {
+  constructor(
+    private readonly configService: ConfigService,
+    private readonly userService: UserService,
+  ) {
     super({
       jwtFromRequest: ExtractJwt.fromHeader('authorization'),
       ignoreExpiration: false,
@@ -14,7 +19,10 @@ export class TokenAuthStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any) {
-    return { userId: payload.aud };
+  async validate(payload: any): Promise<User> {
+    const userId = payload.aud;
+    const user = await this.userService.findUserById(userId);
+    if (!user) throw new NotFoundException('USER_NOT_FOUND');
+    return user;
   }
 }
