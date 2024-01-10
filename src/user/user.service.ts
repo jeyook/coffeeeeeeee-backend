@@ -29,6 +29,19 @@ export class UserService {
     return user;
   }
 
+  async findUserById(userId: number) {
+    const user = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+      relations: {
+        userRole: true,
+        provider: true,
+      },
+    });
+    return user;
+  }
+
   async signUpOAuth(userData: OAuthUserDto, provider: Provider, userRole: UserRole) {
     return await this.userRepository.save(userData.toEntity(provider, userRole));
   }
