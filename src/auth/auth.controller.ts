@@ -25,14 +25,7 @@ export class AuthController {
 
   @Get('/kakao')
   @UseGuards(AuthGuard('kakao'))
-  async kakaoOAuth() {}
-
-  @Get('/kakao/callback')
-  @UseGuards(AuthGuard('kakao'))
-  async kakaoAuthCallback(
-    @AuthUserData() user: OAuthUserDto & { token: string },
-    @Res() res: Response,
-  ) {
+  async kakaoAuth(@AuthUserData() user: OAuthUserDto & { token: string }, @Res() res: Response) {
     res.send(CommonResponseDto.success(ResponseMessage.LOGIN_SUCCESS, user));
   }
 }
