@@ -11,7 +11,7 @@ import { Provider } from 'src/entity/provider.entity';
 import { AuthService } from './auth.service';
 import { UserService } from 'src/user/user.service';
 
-import { OAuthUserDto } from './dto/auth-user.dto';
+import { OAuthUserDto } from './dto/oauth-user.dto';
 
 @Injectable()
 export class GoogleOAuthStrategy extends PassportStrategy(Strategy, 'google') {
@@ -55,6 +55,6 @@ export class GoogleOAuthStrategy extends PassportStrategy(Strategy, 'google') {
 
     const token = this.authService.sign({ aud: user.id });
 
-    done(null, { ...user, token: token });
+    done(null, { token: token });
   }
 }

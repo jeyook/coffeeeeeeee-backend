@@ -6,6 +6,7 @@ import { AppService } from './app.service';
 import { UserModule } from './user/user.module';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
+import { PassportModule } from '@nestjs/passport';
 import { BookmarkModule } from './bookmark/bookmark.module';
 
 @Module({
@@ -25,6 +26,7 @@ import { BookmarkModule } from './bookmark/bookmark.module';
     }),
     UserModule,
     AuthModule,
+    PassportModule,
     BookmarkModule,
   ],
   controllers: [AppController, AuthController],
