@@ -6,7 +6,7 @@ export class CreateBookmarkDto {
   readonly userId: number;
   readonly cafeId: number;
 
-  toEntity(cafe: Cafe, user: User): Bookmark {
+  toEntity(user: User, cafe: Cafe): Bookmark {
     const bookmark = new Bookmark();
     bookmark.cafe = cafe;
     bookmark.user = user;

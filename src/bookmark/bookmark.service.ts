@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Bookmark } from 'src/entity/bookmark.entity';
 import { CreateBookmarkDto } from './dto/bookmark-create.dto';
 import { InjectRepository } from '@nestjs/typeorm';
@@ -14,13 +14,17 @@ export class BookmarkService {
   ) {}
 
   async getAllBookmark() {
-    return await this.bookmarkRepository.find();
+    // 조회기능 구현시 사용
+    // return await this.bookmarkRepository.find();
   }
 
   async createBookmark(user: User, cafeId: number): Promise<void> {
+    const foundCafe = await this.cafeRepository.findOneBy({ id: cafeId });
+    if (!foundCafe) throw new NotFoundException('NOT_FOUND_CAFE');
+
     const bookmarkDto = new CreateBookmarkDto();
-    const cafe = await this.cafeRepository.findOneBy({ id: cafeId });
-    const bookmark = bookmarkDto.toEntity(cafe, user);
+
+    const bookmark = bookmarkDto.toEntity(user, foundCafe);
     await this.bookmarkRepository.save(bookmark);
   }
 }
