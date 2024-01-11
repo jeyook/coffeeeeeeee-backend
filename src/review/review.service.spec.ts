@@ -43,6 +43,10 @@ describe('ReviewService', () => {
     reviewService = module.get<ReviewService>(ReviewService);
   });
 
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
   it('should be defined', () => {
     expect(reviewService).toBeDefined();
   });
@@ -94,9 +98,9 @@ describe('ReviewService', () => {
     it('SUCCESS: 리뷰를 정상적으로 생성한다.', async () => {
       // Given
       const spyCafeFindOneByFn = jest.spyOn(mockCafeRepository, 'findOneBy');
-      spyCafeFindOneByFn.mockReturnValueOnce(mockCafe);
+      spyCafeFindOneByFn.mockResolvedValueOnce(mockCafe);
       const spyTagFindOneByFn = jest.spyOn(mockTagRepository, 'findOneBy');
-      spyTagFindOneByFn.mockReturnValueOnce(mockTag);
+      spyTagFindOneByFn.mockResolvedValueOnce(mockTag);
       const spyReviewSaveByFn = jest.spyOn(mockReviewRepository, 'save');
 
       // When
@@ -119,7 +123,7 @@ describe('ReviewService', () => {
     it('FAILURE: 검색할 카페가 존재하지 않으면 Not Found Exception을 반환한다.', async () => {
       // Given
       const spyCafeFindOneByFn = jest.spyOn(mockCafeRepository, 'findOneBy');
-      spyCafeFindOneByFn.mockReturnValueOnce(undefined);
+      spyCafeFindOneByFn.mockResolvedValueOnce(undefined);
 
       // When
       let hasThrown = false;
@@ -148,9 +152,9 @@ describe('ReviewService', () => {
     it('FAILURE: 검색할 태그가 존재하지 않으면 Not Found Exception을 반환한다.', async () => {
       // Given
       const spyCafeFindOneByFn = jest.spyOn(mockCafeRepository, 'findOneBy');
-      spyCafeFindOneByFn.mockReturnValueOnce(mockCafe);
+      spyCafeFindOneByFn.mockResolvedValueOnce(mockCafe);
       const spyTagFindOneByFn = jest.spyOn(mockTagRepository, 'findOneBy');
-      spyTagFindOneByFn.mockReturnValueOnce(undefined);
+      spyTagFindOneByFn.mockResolvedValueOnce(undefined);
 
       // When
       let hasThrown = false;

@@ -67,7 +67,7 @@ describe('ReviewController', () => {
     it('SUCCESS: 리뷰를 정상적으로 생성한다.', async () => {
       // Given
       const spyCreateReviewFn = jest.spyOn(mockReviewService, 'createReview');
-      spyCreateReviewFn.mockReturnValueOnce(null);
+      spyCreateReviewFn.mockResolvedValueOnce(null);
 
       const expectedResult = {
         message: 'CREATE_SUCCESS',
