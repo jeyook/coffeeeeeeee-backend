@@ -8,7 +8,10 @@ import { AuthUserData } from 'src/auth/decorator/auth-user-data.decorator';
 export class BookmarkController {
   constructor(private bookmarkService: BookmarkService) {}
   @Get()
-  async getBookmark() {}
+  @UseGuards(TokenAuthGuard)
+  async getBookmark(@AuthUserData() user: User) {
+    await this.bookmarkService.getAllBookmark(user);
+  }
 
   @Post()
   @UseGuards(TokenAuthGuard)

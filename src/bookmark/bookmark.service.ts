@@ -12,9 +12,13 @@ export class BookmarkService {
     @InjectRepository(Bookmark) private readonly bookmarkRepository: Repository<Bookmark>,
   ) {}
 
-  async getAllBookmark() {
+  async getAllBookmark(user: User) {
     // 조회기능 구현시 사용
-    // return await this.bookmarkRepository.find();
+    return await this.bookmarkRepository.find({
+      where: {
+        user: user,
+      },
+    });
   }
 
   async createBookmark(user: User, cafeId: number): Promise<void> {
