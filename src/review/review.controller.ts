@@ -1,15 +1,18 @@
 import {
   Body,
   Controller,
+  Get,
   Param,
   ParseIntPipe,
   Post,
+  Query,
   UploadedFiles,
   UseFilters,
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { PageRequestDto } from 'src/common/dto/page-request.dto';
 import { AuthUserData } from '../auth/decorator/auth-user-data.decorator';
 import { TokenAuthGuard } from '../auth/token-auth.guard';
 import { CommonResponseDto } from '../common/dto/common-response.dto';
@@ -36,5 +39,15 @@ export class ReviewController {
     await this.reviewService.createReview(user, cafeId, images, dto);
 
     return CommonResponseDto.successNoContent(ResponseMessage.CREATE_SUCCESS);
+  }
+
+  @Get('/:cafeId/review')
+  async getPaginatedReview(
+    @Param('cafeId', ParseIntPipe) cafeId: number,
+    @Query() dto: PageRequestDto,
+  ) {
+    const result = await this.reviewService.getPaginatedReview(cafeId, dto);
+
+    return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, result);
   }
 }
