@@ -85,6 +85,12 @@ describe('ReviewController', () => {
       // Then
       expect(result).toEqual(expectedResult);
       expect(spyCreateReviewFn).toHaveBeenCalledTimes(1);
+      expect(spyCreateReviewFn).toHaveBeenCalledWith(
+        mockUser,
+        mockCafeId,
+        mockImages,
+        mockCreateDto,
+      );
     });
   });
 });
