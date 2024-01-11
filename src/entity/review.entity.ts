@@ -2,6 +2,7 @@ import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColum
 import { Base } from './base.entity';
 import { Cafe } from './cafe.entity';
 import { ReviewImage } from './review-image.entity';
+import { ReviewTag } from './review-tag.entity';
 import { User } from './user.entity';
 
 @Entity()
@@ -25,4 +26,7 @@ export class Review extends Base {
 
   @OneToMany(() => ReviewImage, (reviewImage) => reviewImage.review, { cascade: true, eager: true })
   reviewImages: ReviewImage[];
+
+  @OneToMany(() => ReviewTag, (reviewTag) => reviewTag.review, { cascade: true, eager: true })
+  reviewTags: ReviewTag[];
 }
