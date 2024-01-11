@@ -10,12 +10,12 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { AuthUserData } from 'src/auth/decorator/auth-user-data.decorator';
-import { TokenAuthGuard } from 'src/auth/token-auth.guard';
-import { User } from 'src/entity/user.entity';
-import { ReviewExceptionFilter } from 'src/filter/review-exception.filter';
+import { AuthUserData } from '../auth/decorator/auth-user-data.decorator';
+import { TokenAuthGuard } from '../auth/token-auth.guard';
 import { CommonResponseDto } from '../common/dto/common-response.dto';
 import { ResponseMessage } from '../common/dto/response-message.enum';
+import { User } from '../entity/user.entity';
+import { ReviewExceptionFilter } from '../filter/review-exception.filter';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewService } from './review.service';
 
