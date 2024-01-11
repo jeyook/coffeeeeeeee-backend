@@ -1,8 +1,8 @@
 import { Body, Controller, Get, Post, UseGuards } from '@nestjs/common';
 import { BookmarkService } from './bookmark.service';
-import { User } from 'src/entity/user.entity';
-import { TokenAuthGuard } from 'src/auth/token-auth.guard';
-import { AuthUserData } from 'src/auth/decorator/auth-user-data.decorator';
+import { User } from '../entity/user.entity';
+import { TokenAuthGuard } from '../auth/token-auth.guard';
+import { AuthUserData } from '../auth/decorator/auth-user-data.decorator';
 
 @Controller('bookmark')
 export class BookmarkController {
