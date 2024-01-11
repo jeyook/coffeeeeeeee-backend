@@ -56,9 +56,14 @@ export class ReviewService {
       order: {
         createdAt: 'DESC',
       },
-      relations: ['reviewTags.tag'],
+      relations: {
+        user: true,
+        reviewTags: {
+          tag: true,
+        },
+      },
     });
-
+    console.log(foundReviews);
     const foundReviewsTotalPage = Math.ceil(foundReviewsTotalCount / limit);
     if (foundReviewsTotalPage < dto.pageNo) throw new BadRequestException('PAGE_OUT_OF_RANGE');
 
