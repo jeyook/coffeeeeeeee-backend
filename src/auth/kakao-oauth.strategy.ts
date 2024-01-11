@@ -31,12 +31,12 @@ export class KakaoOAuthStrategy extends PassportStrategy(Strategy, 'kakao') {
 
   async validate(accessToken: string, refreshToken: string, profile: Profile, done) {
     const { id, displayName, _json } = profile;
-
+    const socialId = String(id);
     const email = _json.kakao_account.email;
 
-    let user = await this.userService.findUserByEmail(email);
+    let user = await this.userService.findUserBySocialId(socialId, 'kakao');
     if (!user) {
-      const userData = new OAuthUserDto(email, displayName, 'kakao', String(id));
+      const userData = new OAuthUserDto(email, displayName, 'kakao', socialId);
       const provider = await this.providerRepository.findOne({
         where: { name: userData.providerName },
       });
