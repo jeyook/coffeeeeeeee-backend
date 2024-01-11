@@ -70,12 +70,17 @@ describe('ReviewService', () => {
       },
     ];
     const mockTagId = 1;
+    const mockReview = {
+      id: 1,
+      rating: 1,
+      content: '테스트입니다.',
+    };
     const mockCreateDto = {
       rating: 1,
       content: '테스트입니다.',
       tagIds: [mockTagId],
       toEntity: function (): Review {
-        return new Review();
+        return mockReview as Review;
       },
     };
     const mockCafe = {
@@ -118,6 +123,7 @@ describe('ReviewService', () => {
       expect(spyTagFindOneByFn).toHaveBeenCalledTimes(1);
       expect(spyTagFindOneByFn).toHaveBeenCalledWith({ id: mockTagId });
       expect(spyReviewSaveByFn).toHaveBeenCalledTimes(1);
+      expect(spyReviewSaveByFn).toHaveBeenCalledWith(mockReview);
     });
 
     it('FAILURE: 검색할 카페가 존재하지 않으면 Not Found Exception을 반환한다.', async () => {
