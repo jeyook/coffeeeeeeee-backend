@@ -1,8 +1,8 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { PageRequestDto } from 'src/common/dto/page-request.dto';
-import { PageResponseDto } from 'src/common/dto/page-response.dts';
 import { Repository } from 'typeorm';
+import { PageRequestDto } from '../common/dto/page-request.dto';
+import { PageResponseDto } from '../common/dto/page-response.dts';
 import { Cafe } from '../entity/cafe.entity';
 import { Review } from '../entity/review.entity';
 import { Tag } from '../entity/tag.entity';

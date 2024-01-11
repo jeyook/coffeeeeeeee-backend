@@ -1,8 +1,8 @@
-import { TagResponseDto } from 'src/common/dto/tag-response.dto';
-import { ReviewImage } from 'src/entity/review-image.entity';
-import { ReviewTag } from 'src/entity/review-tag.entity';
-import { User } from 'src/entity/user.entity';
+import { TagResponseDto } from '../../common/dto/tag-response.dto';
+import { ReviewImage } from '../../entity/review-image.entity';
+import { ReviewTag } from '../../entity/review-tag.entity';
 import { Review } from '../../entity/review.entity';
+import { User } from '../../entity/user.entity';
 
 interface ReviewImageDto {
   id: number;
