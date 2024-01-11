@@ -62,7 +62,7 @@ describe('BookmarkService', () => {
     it('SUCCESS: 북마크를 정상적으로 추가한다.', async () => {
       // Given
       const spyCafeFindOneByFn = jest.spyOn(mockCafeRepository, 'findOneBy');
-      spyCafeFindOneByFn.mockReturnValueOnce(mockCafe);
+      spyCafeFindOneByFn.mockResolvedValueOnce(mockCafe);
       const spyBookmarkSaveByFn = jest.spyOn(mockBookmarkRepository, 'save');
 
       // When

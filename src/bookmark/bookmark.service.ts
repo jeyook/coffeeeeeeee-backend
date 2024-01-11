@@ -25,7 +25,7 @@ export class BookmarkService {
     const foundCafe = await this.cafeRepository.findOneBy({ id: cafeId });
     if (!foundCafe) throw new NotFoundException('NOT_FOUND_CAFE');
 
-    const bookmark = await this.bookmarkRepository.create({
+    const bookmark = this.bookmarkRepository.create({
       user: user,
       cafe: foundCafe,
     });
