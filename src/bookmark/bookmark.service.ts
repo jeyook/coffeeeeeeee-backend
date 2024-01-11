@@ -1,7 +1,7 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { Bookmark } from '../entity/bookmark.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { Bookmark } from '../entity/bookmark.entity';
 import { Cafe } from '../entity/cafe.entity';
 import { User } from '../entity/user.entity';
 
@@ -25,7 +25,7 @@ export class BookmarkService {
     const foundCafe = await this.cafeRepository.findOneBy({ id: cafeId });
     if (!foundCafe) throw new NotFoundException('NOT_FOUND_CAFE');
 
-    const bookmark = this.bookmarkRepository.create({
+    const bookmark = await this.bookmarkRepository.create({
       user: user,
       cafe: foundCafe,
     });
