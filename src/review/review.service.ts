@@ -63,7 +63,7 @@ export class ReviewService {
         },
       },
     });
-    console.log(foundReviews);
+
     const foundReviewsTotalPage = Math.ceil(foundReviewsTotalCount / limit);
     if (foundReviewsTotalPage < dto.pageNo) throw new BadRequestException('PAGE_OUT_OF_RANGE');
 
