@@ -41,7 +41,10 @@ export class ReviewService {
     await this.reviewRepository.save(review);
   }
 
-  async getPaginatedReview(cafeId: number, dto: PageRequestDto) {
+  async getPaginatedReview(
+    cafeId: number,
+    dto: PageRequestDto,
+  ): Promise<PageResponseDto<ReviewResponseDto>> {
     const foundCafe = await this.cafeRepository.findOneBy({ id: cafeId });
     if (!foundCafe) throw new NotFoundException('NOT_FOUND_CAFE');
 
