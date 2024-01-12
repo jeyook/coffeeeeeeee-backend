@@ -1,20 +1,18 @@
-import { Controller, Get, Param, ParseIntPipe, UseFilters } from '@nestjs/common';
-import { PlaceService } from './place.service';
+import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import { CafeService } from './cafe.service';
 import { CommonResponseDto } from '../common/dto/common-response.dto';
 import { ResponseMessage } from '../common/dto/response-message.enum';
 import { Cafe } from '../entity/cafe.entity';
-import { PlaceExceptionFilter } from 'src/filter/place-exception.filter';
+
 import { ApiCreatedResponse, ApiForbiddenResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-@Controller('place')
-@ApiTags('place')
-//일단 필터 생성
-@UseFilters(new PlaceExceptionFilter())
-export class PlaceController {
-  constructor(private readonly placeService: PlaceService) {}
+@Controller('cafe')
+@ApiTags('cafe')
+export class CafeController {
+  constructor(private readonly cafeService: CafeService) {}
 
-  @Get('/:placeId')
-  @ApiOperation({ summary: 'getPlaceById', description: 'placeId로 해당 카페 상세내용을 가져온다' })
+  @Get('/:cafeId')
+  @ApiOperation({ summary: 'getCafeById', description: 'cafeId로 해당 카페 상세내용을 가져온다' })
   @ApiCreatedResponse({
     description: '성공여부',
     schema: {
@@ -46,10 +44,10 @@ export class PlaceController {
       },
     },
   })
-  async getPlaceById(
-    @Param('placeId', ParseIntPipe) placeId: number, //transform true
+  async getCafeById(
+    @Param('cafeId', ParseIntPipe) cafeId: number, //transform true
   ): Promise<CommonResponseDto<Cafe>> {
-    const data = await this.placeService.getPlaceById(placeId);
+    const data = await this.cafeService.getCafeById(cafeId);
     return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, data);
   }
 }
