@@ -1,6 +1,6 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
 import { AuthUserData } from 'src/auth/decorator/auth-user-data.decorator';
-import { OptionalTokenAuthGuard } from 'src/auth/optional-token-auth.guard';
+import { TokenRequirement } from 'src/auth/dto/token-requirement.enum';
 
 import { TokenAuthGuard } from 'src/auth/token-auth.guard';
 import { User } from 'src/entity/user.entity';
@@ -18,7 +18,7 @@ export class UserController {
   }
 
   @Get('/require/auth/optional')
-  @UseGuards(OptionalTokenAuthGuard)
+  @UseGuards(new TokenAuthGuard(TokenRequirement.OPTIONAL))
   getAuthOptionalHello(@AuthUserData() user: User) {
     return {
       message: `Hello, user!`,
