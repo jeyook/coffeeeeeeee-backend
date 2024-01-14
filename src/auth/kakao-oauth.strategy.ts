@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 
-import { Strategy, Profile, VerifyCallback } from 'passport-google-oauth20';
+import { Strategy, Profile } from 'passport-kakao';
 import { Repository } from 'typeorm';
 
 import { UserRole } from 'src/entity/user-role.entity';
@@ -14,7 +14,7 @@ import { UserService } from 'src/user/user.service';
 import { OAuthUserDto } from './dto/oauth-user.dto';
 
 @Injectable()
-export class GoogleOAuthStrategy extends PassportStrategy(Strategy, 'google') {
+export class KakaoOAuthStrategy extends PassportStrategy(Strategy, 'kakao') {
   constructor(
     private authService: AuthService,
     private userService: UserService,
@@ -24,26 +24,19 @@ export class GoogleOAuthStrategy extends PassportStrategy(Strategy, 'google') {
     private providerRepository: Repository<Provider>,
   ) {
     super({
-      clientID: process.env.OAUTH_GOOGLE_CLIENT_ID,
-      clientSecret: process.env.OAUTH_GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.OAUTH_GOOGLE_REDIRECT,
-      scope: ['email', 'profile'],
+      clientID: process.env.OAUTH_KAKAO_CLIENT_ID,
+      callbackURL: process.env.OAUTH_KAKAO_REDIRECT,
     });
   }
 
-  async validate(
-    accessToken: string,
-    refreshToken: string,
-    profile: Profile,
-    done: VerifyCallback,
-  ) {
-    const { id, name, emails } = profile;
+  async validate(accessToken: string, refreshToken: string, profile: Profile, done) {
+    const { id, displayName, _json } = profile;
+    const socialId = String(id);
+    const email = _json.kakao_account.email;
 
-    const email = emails[0].value;
-
-    let user = await this.userService.findUserBySocialId(id, 'google');
+    let user = await this.userService.findUserBySocialId(socialId, 'kakao');
     if (!user) {
-      const userData = new OAuthUserDto(email, name.givenName, 'google', id);
+      const userData = new OAuthUserDto(email, displayName, 'kakao', socialId);
       const provider = await this.providerRepository.findOne({
         where: { name: userData.providerName },
       });

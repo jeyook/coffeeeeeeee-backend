@@ -1,11 +1,14 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { PageRequestDto } from '../common/dto/page-request.dto';
+import { PageResponseDto } from '../common/dto/page-response.dts';
 import { Cafe } from '../entity/cafe.entity';
 import { Review } from '../entity/review.entity';
 import { Tag } from '../entity/tag.entity';
 import { User } from '../entity/user.entity';
 import { CreateReviewDto } from './dto/create-review.dto';
+import { ReviewResponseDto } from './dto/review-response.dto';
 
 @Injectable()
 export class ReviewService {
@@ -36,5 +39,45 @@ export class ReviewService {
     const review = dto.toEntity(user, foundCafe, images, foundTags);
 
     await this.reviewRepository.save(review);
+  }
+
+  async getPaginatedReview(
+    cafeId: number,
+    dto: PageRequestDto,
+  ): Promise<PageResponseDto<ReviewResponseDto>> {
+    const foundCafe = await this.cafeRepository.findOneBy({ id: cafeId });
+    if (!foundCafe) throw new NotFoundException('NOT_FOUND_CAFE');
+
+    const limit = dto.getLimit();
+    const offset = dto.getOffset();
+    const [foundReviews, foundReviewsTotalCount] = await this.reviewRepository.findAndCount({
+      where: {
+        cafe: { id: foundCafe.id },
+      },
+      take: limit,
+      skip: offset,
+      order: {
+        createdAt: 'DESC',
+      },
+      relations: {
+        user: true,
+        reviewTags: {
+          tag: true,
+        },
+      },
+    });
+
+    const foundReviewsTotalPage = Math.ceil(foundReviewsTotalCount / limit);
+    if (foundReviewsTotalPage < dto.pageNo) throw new BadRequestException('PAGE_OUT_OF_RANGE');
+
+    const reviewResponseDtos = foundReviews.map(
+      (foundReview) => new ReviewResponseDto(foundReview),
+    );
+
+    return new PageResponseDto<ReviewResponseDto>(
+      foundReviewsTotalCount,
+      limit,
+      reviewResponseDtos,
+    );
   }
 }
