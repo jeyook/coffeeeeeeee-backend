@@ -12,7 +12,9 @@ export class BookmarkController {
   @Get()
   @UseGuards(TokenAuthGuard)
   async getBookmark(@AuthUserData() user: User) {
-    await this.bookmarkService.getAllBookmark(user);
+    const result = await this.bookmarkService.getAllBookmark(user);
+
+    return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, result);
   }
 
   @Post()
