@@ -12,7 +12,7 @@ export class BookmarkController {
   constructor(private bookmarkService: BookmarkService) {}
   @Get()
   @UseGuards(TokenAuthGuard)
-  async getPaginatedBookmark(@AuthUserData() user: User, @Query dto: PageRequestDto) {
+  async getPaginatedBookmark(@AuthUserData() user: User, @Query() dto: PageRequestDto) {
     const result = await this.bookmarkService.getPaginatedBookmark(user, dto);
     return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, result);
   }
