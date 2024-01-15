@@ -12,7 +12,16 @@ export class UserController {
   getAuthHello(@AuthUserData() user: User) {
     return {
       message: `Hello, authorized user ${user.id}!`,
-      ...user,
+      user,
+    };
+  }
+
+  @Get('/require/auth/optional')
+  @UseGuards(new TokenAuthGuard({ isTokenOptional: false }))
+  getAuthOptionalHello(@AuthUserData() user: User) {
+    return {
+      message: `Hello, user!`,
+      user,
     };
   }
 }
