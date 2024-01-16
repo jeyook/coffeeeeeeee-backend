@@ -29,7 +29,37 @@ export class UserService {
     return user;
   }
 
+  async findUserById(userId: number) {
+    const user = await this.userRepository.findOne({
+      where: {
+        id: userId,
+      },
+      relations: {
+        userRole: true,
+        provider: true,
+      },
+    });
+    return user;
+  }
+
+  async findUserBySocialId(socialId: string, provider: string) {
+    const user = await this.userRepository.findOne({
+      where: {
+        socialId: socialId,
+        provider: {
+          name: provider,
+        },
+      },
+      relations: {
+        userRole: true,
+        provider: true,
+      },
+    });
+    return user;
+  }
+
   async signUpOAuth(userData: OAuthUserDto, provider: Provider, userRole: UserRole) {
-    return await this.userRepository.save(userData.toEntity(provider, userRole));
+    const user = userData.toEntity(provider, userRole);
+    return await this.userRepository.save(user);
   }
 }

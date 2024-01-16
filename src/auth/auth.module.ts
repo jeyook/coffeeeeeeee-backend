@@ -13,6 +13,7 @@ import { AuthService } from './auth.service';
 import { AuthController } from './auth.controller';
 import { GoogleOAuthStrategy } from './google-oauth.strategy';
 import { TokenAuthStrategy } from './token-auth.strategy';
+import { KakaoOAuthStrategy } from './kakao-oauth.strategy';
 
 @Module({
   imports: [
@@ -29,7 +30,7 @@ import { TokenAuthStrategy } from './token-auth.strategy';
       inject: [ConfigService],
     }),
   ],
-  providers: [AuthService, GoogleOAuthStrategy, TokenAuthStrategy],
+  providers: [AuthService, GoogleOAuthStrategy, TokenAuthStrategy, KakaoOAuthStrategy],
   controllers: [AuthController],
   exports: [AuthService],
 })

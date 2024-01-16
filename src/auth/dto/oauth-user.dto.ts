@@ -21,6 +21,7 @@ export class OAuthUserDto {
     user.nickname = this.nickname;
     user.provider = provider;
     user.userRole = userRole;
+    user.socialId = this.socialId;
     return user;
   }
 }

@@ -20,7 +20,12 @@ export class AuthController {
     @AuthUserData() user: OAuthUserDto & { token: string },
     @Res() res: Response,
   ) {
-    // TODO: COF-16 머지 후 response 형식 적용
+    res.send(CommonResponseDto.success(ResponseMessage.LOGIN_SUCCESS, user));
+  }
+
+  @Get('/kakao')
+  @UseGuards(AuthGuard('kakao'))
+  async kakaoAuth(@AuthUserData() user: OAuthUserDto & { token: string }, @Res() res: Response) {
     res.send(CommonResponseDto.success(ResponseMessage.LOGIN_SUCCESS, user));
   }
 }

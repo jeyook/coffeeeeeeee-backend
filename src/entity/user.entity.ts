@@ -8,10 +8,12 @@ export class User extends Base {
   @PrimaryGeneratedColumn()
   id: number;
 
-  @Column({ length: 8 })
+  // TODO: 적절한 이름 길이 정하기
+  @Column({ length: 50 })
   nickname: string;
 
-  @Column({ length: 30 })
+  // TODO: 적절한 이메일 길이 정하기
+  @Column({ length: 200 })
   email: string;
 
   @Column({

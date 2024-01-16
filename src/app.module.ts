@@ -1,13 +1,15 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
+import { PassportModule } from '@nestjs/passport';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { UserModule } from './user/user.module';
-import { CafeModule } from './cafe/cafe.module';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
-import { PassportModule } from '@nestjs/passport';
+import { BookmarkModule } from './bookmark/bookmark.module';
+import { ReviewModule } from './review/review.module';
+import { UserModule } from './user/user.module';
+import { CafeModule } from './cafe/cafe.module';
 
 @Module({
   imports: [
@@ -29,6 +31,8 @@ import { PassportModule } from '@nestjs/passport';
     CafeModule,
     AuthModule,
     PassportModule,
+    ReviewModule,
+    BookmarkModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService],
