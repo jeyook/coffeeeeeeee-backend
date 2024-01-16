@@ -2,7 +2,7 @@ import { BadRequestException, Injectable, NotFoundException } from '@nestjs/comm
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { PageRequestDto } from '../common/dto/page-request.dto';
-import { PageResponseDto } from '../common/dto/page-response.dts';
+import { PageResponseDto } from '../common/dto/page-response.dto';
 import { Cafe } from '../entity/cafe.entity';
 import { Review } from '../entity/review.entity';
 import { Tag } from '../entity/tag.entity';
@@ -68,13 +68,15 @@ export class ReviewService {
     });
 
     const foundReviewsTotalPage = Math.ceil(foundReviewsTotalCount / limit);
-    if (foundReviewsTotalPage < dto.pageNo) throw new BadRequestException('PAGE_OUT_OF_RANGE');
+    const currentPage = dto.pageNo;
+    if (foundReviewsTotalPage < currentPage) throw new BadRequestException('PAGE_OUT_OF_RANGE');
 
     const reviewResponseDtos = foundReviews.map(
       (foundReview) => new ReviewResponseDto(foundReview),
     );
 
     return new PageResponseDto<ReviewResponseDto>(
+      currentPage,
       foundReviewsTotalCount,
       limit,
       reviewResponseDtos,
