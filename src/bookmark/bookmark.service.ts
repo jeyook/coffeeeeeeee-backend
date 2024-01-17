@@ -4,8 +4,8 @@ import { Repository } from 'typeorm';
 import { Bookmark } from '../entity/bookmark.entity';
 import { Cafe } from '../entity/cafe.entity';
 import { User } from '../entity/user.entity';
-import { PageRequestDto } from 'src/common/dto/page-request.dto';
-import { PageResponseDto } from 'src/common/dto/page-response.dts';
+import { PageRequestDto } from '../common/dto/page-request.dto';
+import { PageResponseDto } from '../common/dto/page-response.dts';
 import { BookmarkResponseDto } from './dto/bookmark-resposnse.dto';
 
 @Injectable()

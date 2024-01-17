@@ -5,7 +5,7 @@ import { TokenAuthGuard } from '../auth/token-auth.guard';
 import { AuthUserData } from '../auth/decorator/auth-user-data.decorator';
 import { CommonResponseDto } from '../common/dto/common-response.dto';
 import { ResponseMessage } from '../common/dto/response-message.enum';
-import { PageRequestDto } from 'src/common/dto/page-request.dto';
+import { PageRequestDto } from '../common/dto/page-request.dto';
 
 @Controller('bookmark')
 export class BookmarkController {
