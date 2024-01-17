@@ -5,7 +5,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class TokenAuthGuard extends AuthGuard('jwt') {
   constructor(options: TokenAuthGuardOptions = { isTokenOptional: false }) {
     super();
-    if (!options.isTokenOptional) {
+    if (options.isTokenOptional) {
       this.handleRequest = function handleRequest<TUser = any>(err: any, user: any): TUser {
         return user;
       };
