@@ -11,7 +11,7 @@ export class CafeService {
     private readonly cafeRepository: Repository<Cafe>,
   ) {}
 
-  async getCafeById(cafeId: number): Promise<CafeResponseDto | undefined> {
+  async getCafeById(cafeId: number): Promise<CafeResponseDto> {
     const cafe = await this.cafeRepository.findOne({ where: { id: cafeId } });
 
     if (!cafe) {

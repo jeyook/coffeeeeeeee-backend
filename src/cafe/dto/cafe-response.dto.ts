@@ -1,4 +1,4 @@
-import { Cafe } from 'src/entity/cafe.entity';
+import { Cafe } from '../../entity/cafe.entity';
 
 export class CafeResponseDto {
   private id: number;
