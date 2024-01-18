@@ -14,7 +14,6 @@ interface ReviewUserDto {
   nickname: string;
 }
 
-// TODO: 이름에 Response나 Request 고민해보기
 export class ReviewResponseDto {
   private id: number;
 
@@ -32,30 +31,32 @@ export class ReviewResponseDto {
     this.id = review.id;
     this.rating = review.rating;
     this.content = review.content;
-    this.user = mapUserToDto(review.user);
-    this.images = mapReviewImagesToDto(review.reviewImages);
-    this.tag = mapReviewTagsToDto(review.reviewTags);
+    this.user = this.mapUserToDto(review.user);
+    this.images = this.mapReviewImagesToDto(review.reviewImages);
+    this.tag = this.mapReviewTagsToDto(review.reviewTags);
   }
-}
 
-const mapUserToDto = (user: User): ReviewUserDto => {
-  return {
-    id: user.id,
-    nickname: user.nickname,
+  private mapUserToDto(user: User): ReviewUserDto {
+    return {
+      id: user.id,
+      nickname: user.nickname,
+    };
+  }
+
+  private mapReviewImagesToDto(reviewImages: ReviewImage[]): ReviewImageDto[] {
+    return reviewImages
+      .map((reviewImage) => {
+        return {
+          id: reviewImage.id,
+          url: reviewImage.url,
+        };
+      })
+      .sort((a, b) => {
+        return a.id - b.id;
+      });
+  }
+
+  private mapReviewTagsToDto = (reviewTags: ReviewTag[]): TagResponseDto[] => {
+    return reviewTags.map((reviewTag) => new TagResponseDto(reviewTag.tag.id, reviewTag.tag.name));
   };
-};
-
-const mapReviewImagesToDto = (reviewImages: ReviewImage[]): ReviewImageDto[] =>
-  reviewImages
-    .map((reviewImage) => {
-      return {
-        id: reviewImage.id,
-        url: reviewImage.url,
-      };
-    })
-    .sort((a, b) => {
-      return a.id - b.id;
-    });
-
-const mapReviewTagsToDto = (reviewTags: ReviewTag[]): TagResponseDto[] =>
-  reviewTags.map((reviewTag) => new TagResponseDto(reviewTag.tag.id, reviewTag.tag.name));
+}
