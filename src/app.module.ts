@@ -9,6 +9,7 @@ import { AuthModule } from './auth/auth.module';
 import { BookmarkModule } from './bookmark/bookmark.module';
 import { ReviewModule } from './review/review.module';
 import { UserModule } from './user/user.module';
+import { CafeModule } from './cafe/cafe.module';
 
 @Module({
   imports: [
@@ -24,8 +25,10 @@ import { UserModule } from './user/user.module';
       database: process.env.DB_NAME,
       entities: [__dirname + '/../**/*.entity.{js, ts}'],
       synchronize: true,
+      logging: true,
     }),
     UserModule,
+    CafeModule,
     AuthModule,
     PassportModule,
     ReviewModule,
