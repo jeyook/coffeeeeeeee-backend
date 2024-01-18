@@ -16,6 +16,7 @@ export class UserController {
     };
   }
 
+  // TODO: test용 엔드포인트 지우기
   @Get('/require/auth/optional')
   @UseGuards(new TokenAuthGuard({ isTokenOptional: false }))
   getAuthOptionalHello(@AuthUserData() user: User) {
