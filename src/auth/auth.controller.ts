@@ -4,7 +4,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 
 import { AuthUserData } from './decorator/auth-user-data.decorator';
-import { OAuthUserDto } from './dto/oauth-user.dto';
 import { CommonResponseDto } from '../common/dto/common-response.dto';
 import { ResponseMessage } from '../common/dto/response-message.enum';
 
@@ -17,15 +16,20 @@ export class AuthController {
   @Get('/google/callback')
   @UseGuards(AuthGuard('google'))
   async googleOAuthCallback(
-    @AuthUserData() user: OAuthUserDto & { token: string },
+    // TODO: 실제로는 token만 들어오고 있음. 실제 데이터에 맞게 변경하거나, user data를 추가해주거나
+    @AuthUserData() user: { token: string },
     @Res() res: Response,
   ) {
-    res.send(CommonResponseDto.success(ResponseMessage.LOGIN_SUCCESS, user));
+    return res.send(CommonResponseDto.success(ResponseMessage.LOGIN_SUCCESS, user));
   }
 
   @Get('/kakao')
   @UseGuards(AuthGuard('kakao'))
-  async kakaoOAuth(@AuthUserData() user: OAuthUserDto & { token: string }, @Res() res: Response) {
-    res.send(CommonResponseDto.success(ResponseMessage.LOGIN_SUCCESS, user));
+  async kakaoOAuth(
+    // TODO: 실제로는 token만 들어오고 있음. 실제 데이터에 맞게 변경하거나, user data를 추가해주거나
+    @AuthUserData() user: { token: string },
+    @Res() res: Response,
+  ) {
+    return res.send(CommonResponseDto.success(ResponseMessage.LOGIN_SUCCESS, user));
   }
 }
