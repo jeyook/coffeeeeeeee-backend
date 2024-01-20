@@ -5,8 +5,8 @@ import { Response } from 'express';
 
 import { AuthUserData } from './decorator/auth-user-data.decorator';
 import { OAuthUserDto } from './dto/oauth-user.dto';
-import { CommonResponseDto } from 'src/common/dto/common-response.dto';
-import { ResponseMessage } from 'src/common/dto/response-message.enum';
+import { CommonResponseDto } from '../common/dto/common-response.dto';
+import { ResponseMessage } from '../common/dto/response-message.enum';
 
 @Controller('/auth')
 export class AuthController {
@@ -16,7 +16,7 @@ export class AuthController {
 
   @Get('/google/callback')
   @UseGuards(AuthGuard('google'))
-  async googleAuthCallback(
+  async googleOAuthCallback(
     @AuthUserData() user: OAuthUserDto & { token: string },
     @Res() res: Response,
   ) {
@@ -25,7 +25,7 @@ export class AuthController {
 
   @Get('/kakao')
   @UseGuards(AuthGuard('kakao'))
-  async kakaoAuth(@AuthUserData() user: OAuthUserDto & { token: string }, @Res() res: Response) {
+  async kakaoOAuth(@AuthUserData() user: OAuthUserDto & { token: string }, @Res() res: Response) {
     res.send(CommonResponseDto.success(ResponseMessage.LOGIN_SUCCESS, user));
   }
 }

@@ -1,8 +1,8 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { AuthUserData } from 'src/auth/decorator/auth-user-data.decorator';
 
-import { TokenAuthGuard } from 'src/auth/token-auth.guard';
-import { User } from 'src/entity/user.entity';
+import { AuthUserData } from '../auth/decorator/auth-user-data.decorator';
+import { TokenAuthGuard } from '../auth/token-auth.guard';
+import { User } from '../entity/user.entity';
 
 @Controller('/user')
 export class UserController {

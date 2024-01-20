@@ -5,11 +5,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Strategy, Profile } from 'passport-kakao';
 import { Repository } from 'typeorm';
 
-import { UserRole } from 'src/entity/user-role.entity';
-import { Provider } from 'src/entity/provider.entity';
+import { UserRole } from '../entity/user-role.entity';
+import { Provider } from '../entity/provider.entity';
 
 import { AuthService } from './auth.service';
-import { UserService } from 'src/user/user.service';
+import { UserService } from '../user/user.service';
 
 import { OAuthUserDto } from './dto/oauth-user.dto';
 
