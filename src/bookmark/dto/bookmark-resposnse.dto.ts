@@ -1,6 +1,6 @@
-import { Bookmark } from 'src/entity/bookmark.entity';
-import { Cafe } from 'src/entity/cafe.entity';
-import { User } from 'src/entity/user.entity';
+import { Bookmark } from '../../entity/bookmark.entity';
+import { Cafe } from '../../entity/cafe.entity';
+import { User } from '../../entity/user.entity';
 
 interface BookmarkUserDto {
   id: number;

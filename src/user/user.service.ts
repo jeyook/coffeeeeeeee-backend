@@ -7,7 +7,8 @@ import { Provider } from '../entity/provider.entity';
 import { UserRole } from '../entity/user-role.entity';
 import { User } from '../entity/user.entity';
 
-import { OAuthUserDto } from '../auth/dto/oauth-user.dto';
+import { OAuthUserDto } from 'src/auth/dto/oauth-user.dto';
+import { UserResponseDto } from './dto/user-response.dto';
 
 @Injectable()
 export class UserService {
@@ -26,7 +27,7 @@ export class UserService {
         provider: true,
       },
     });
-    return user;
+    return new UserResponseDto(user);
   }
 
   async findUserById(userId: number) {
@@ -39,7 +40,7 @@ export class UserService {
         provider: true,
       },
     });
-    return user;
+    return new UserResponseDto(user);
   }
 
   async findUserBySocialId(socialId: string, provider: string) {
@@ -55,11 +56,12 @@ export class UserService {
         provider: true,
       },
     });
-    return user;
+    return new UserResponseDto(user);
   }
 
   async signUpOAuth(userData: OAuthUserDto, provider: Provider, userRole: UserRole) {
-    const user = userData.toEntity(provider, userRole);
-    return await this.userRepository.save(user);
+    const newUser = userData.toEntity(provider, userRole);
+    const user = await this.userRepository.save(newUser);
+    return new UserResponseDto(user);
   }
 }
