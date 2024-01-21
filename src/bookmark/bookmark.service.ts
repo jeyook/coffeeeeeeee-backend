@@ -5,7 +5,7 @@ import { Bookmark } from '../entity/bookmark.entity';
 import { Cafe } from '../entity/cafe.entity';
 import { User } from '../entity/user.entity';
 import { PageRequestDto } from '../common/dto/page-request.dto';
-import { PageResponseDto } from '../common/dto/page-response.dts';
+import { PageResponseDto } from '../common/dto/page-response.dto';
 import { BookmarkResponseDto } from './dto/bookmark-resposnse.dto';
 
 @Injectable()
@@ -30,11 +30,13 @@ export class BookmarkService {
       skip: offset,
     });
     const foundBookmarkTotalPage = Math.ceil(foundBookmarkTotalCount / limit);
-    if (foundBookmarkTotalPage < dto.pageNo) throw new BadRequestException('PAGE_OUT_OF_RANGE');
+    const currentPage = dto.pageNo;
+    if (foundBookmarkTotalPage < currentPage) throw new BadRequestException('PAGE_OUT_OF_RANGE');
     const bookmarkResponseDtos = foundBookmarks.map(
       (foundBookmark) => new BookmarkResponseDto(foundBookmark),
     );
     return new PageResponseDto<BookmarkResponseDto>(
+      currentPage,
       foundBookmarkTotalCount,
       limit,
       bookmarkResponseDtos,

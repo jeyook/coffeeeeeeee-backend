@@ -6,7 +6,7 @@ import { AuthUserData } from '../auth/decorator/auth-user-data.decorator';
 import { CommonResponseDto } from '../common/dto/common-response.dto';
 import { ResponseMessage } from '../common/dto/response-message.enum';
 import { PageRequestDto } from '../common/dto/page-request.dto';
-import { PageResponseDto } from 'src/common/dto/page-response.dts';
+import { PageResponseDto } from 'src/common/dto/page-response.dto';
 import { BookmarkResponseDto } from './dto/bookmark-resposnse.dto';
 
 @Controller('bookmark')
