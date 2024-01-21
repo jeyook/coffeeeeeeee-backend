@@ -21,8 +21,9 @@ export class TokenAuthStrategy extends PassportStrategy(Strategy) {
 
   async validate(payload: any): Promise<User> {
     const userId = payload.aud;
-    const user = await this.userService.findUserById(userId);
-    if (!user) throw new NotFoundException('USER_NOT_FOUND');
+    const userDto = await this.userService.findUserById(userId);
+    if (!userDto) throw new NotFoundException('USER_NOT_FOUND');
+    const user = userDto.toEntity();
     return user;
   }
 }

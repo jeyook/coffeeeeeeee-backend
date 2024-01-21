@@ -41,8 +41,8 @@ export class GoogleOAuthStrategy extends PassportStrategy(Strategy, 'google') {
 
     const email = emails[0].value;
 
-    let user = await this.userService.findUserBySocialId(id, 'google');
-    if (!user) {
+    let userDto = await this.userService.findUserBySocialId(id, 'google');
+    if (!userDto) {
       const userData = new OAuthUserDto(email, name.givenName, 'google', id);
       const provider = await this.providerRepository.findOne({
         where: { name: userData.providerName },
@@ -50,9 +50,9 @@ export class GoogleOAuthStrategy extends PassportStrategy(Strategy, 'google') {
       const userRole = await this.userRoleRepository.findOne({
         where: { role: 'user' },
       });
-      user = await this.userService.signUpOAuth(userData, provider, userRole);
+      userDto = await this.userService.signUpOAuth(userData, provider, userRole);
     }
-
+    const user = userDto.toEntity();
     const token = this.authService.sign({ aud: user.id });
 
     done(null, { token: token });
