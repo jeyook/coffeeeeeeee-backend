@@ -8,7 +8,7 @@ export class OAuthUserDto {
   readonly socialId: string;
   readonly providerName: string;
 
-  constructor(email: string, nickname: string, providerName?: string, socialId?: string) {
+  constructor(email: string, nickname: string, providerName: string, socialId: string) {
     this.email = email;
     this.nickname = nickname;
     this.providerName = providerName;
