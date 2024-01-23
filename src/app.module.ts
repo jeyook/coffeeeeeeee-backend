@@ -10,6 +10,7 @@ import { BookmarkModule } from './bookmark/bookmark.module';
 import { ReviewModule } from './review/review.module';
 import { UserModule } from './user/user.module';
 import { CafeModule } from './cafe/cafe.module';
+import { SectionModule } from './section/section.module';
 
 @Module({
   imports: [
@@ -33,6 +34,7 @@ import { CafeModule } from './cafe/cafe.module';
     PassportModule,
     ReviewModule,
     BookmarkModule,
+    SectionModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService],
