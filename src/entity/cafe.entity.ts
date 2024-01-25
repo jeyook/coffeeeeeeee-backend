@@ -1,6 +1,7 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 import { Base } from './base.entity';
 import { CafeTag } from './cafe-tag.entity';
+import { Section } from './section.entity';
 
 @Entity()
 export class Cafe extends Base {
@@ -47,4 +48,8 @@ export class Cafe extends Base {
   // TODO: lazy 로딩 나중에 고민하고 넣기
   @OneToMany(() => CafeTag, (cafeTag) => cafeTag.cafe, { cascade: true })
   cafeTags: CafeTag[];
+
+  @ManyToOne(() => Section)
+  @JoinColumn({ name: 'section_id' })
+  cafeSection: Section;
 }
