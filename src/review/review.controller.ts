@@ -16,10 +16,12 @@ import { AuthUserData } from '../auth/decorator/auth-user-data.decorator';
 import { TokenAuthGuard } from '../auth/token-auth.guard';
 import { CommonResponseDto } from '../common/dto/common-response.dto';
 import { PageRequestDto } from '../common/dto/page-request.dto';
+import { PageResponseDto } from '../common/dto/page-response.dto';
 import { ResponseMessage } from '../common/dto/response-message.enum';
 import { User } from '../entity/user.entity';
 import { ReviewExceptionFilter } from '../filter/review-exception.filter';
 import { CreateReviewDto } from './dto/create-review.dto';
+import { ReviewResponseDto } from './dto/review-response.dto';
 import { ReviewService } from './review.service';
 
 @Controller('/cafe')
@@ -42,11 +44,13 @@ export class ReviewController {
   }
 
   @Get('/:cafeId/review')
+  @UseGuards(new TokenAuthGuard({ isTokenOptional: true }))
   async getPaginatedReview(
     @Param('cafeId', ParseIntPipe) cafeId: number,
     @Query() dto: PageRequestDto,
-  ) {
-    const result = await this.reviewService.getPaginatedReview(cafeId, dto);
+    @AuthUserData() user?: User,
+  ): Promise<CommonResponseDto<PageResponseDto<ReviewResponseDto>>> {
+    const result = await this.reviewService.getPaginatedReview(cafeId, dto, user);
 
     return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, result);
   }
