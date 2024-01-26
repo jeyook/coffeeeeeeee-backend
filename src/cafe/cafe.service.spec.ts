@@ -11,7 +11,7 @@ class MockCafeRepository extends Repository<Cafe> {
 }
 
 describe('CafeService', () => {
-  let service: CafeService;
+  let cafeService: CafeService;
   let cafeRepository: MockCafeRepository;
 
   beforeEach(async () => {
@@ -25,7 +25,7 @@ describe('CafeService', () => {
       ],
     }).compile();
 
-    service = module.get<CafeService>(CafeService);
+    cafeService = module.get<CafeService>(CafeService);
     cafeRepository = module.get<MockCafeRepository>(getRepositoryToken(Cafe));
   });
 
@@ -34,7 +34,7 @@ describe('CafeService', () => {
       const mockCafe = new Cafe();
       cafeRepository.findOne.mockReturnValueOnce(mockCafe);
 
-      const result = await service.getCafeById(1);
+      const result = await cafeService.getCafeById(1);
 
       expect(result).toBeInstanceOf(CafeResponseDto);
       expect(result).toEqual(new CafeResponseDto(mockCafe));
@@ -44,7 +44,7 @@ describe('CafeService', () => {
     it('should throw NotFoundException when cafe is not found', async () => {
       cafeRepository.findOne.mockReturnValueOnce(undefined);
 
-      await expect(service.getCafeById(1)).rejects.toThrowError(NotFoundException);
+      await expect(cafeService.getCafeById(1)).rejects.toThrowError(NotFoundException);
       expect(cafeRepository.findOne).toHaveBeenCalledWith({ where: { id: 1 } });
     });
   });
