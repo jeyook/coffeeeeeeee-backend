@@ -10,6 +10,7 @@ import { BookmarkModule } from './bookmark/bookmark.module';
 import { typeOrmConfig } from './config/type-orm.config';
 import { ReviewModule } from './review/review.module';
 import { UserModule } from './user/user.module';
+import { CafeModule } from './cafe/cafe.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { UserModule } from './user/user.module';
     }),
     TypeOrmModule.forRootAsync(typeOrmConfig),
     UserModule,
+    CafeModule,
     AuthModule,
     PassportModule,
     ReviewModule,
