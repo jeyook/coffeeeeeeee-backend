@@ -1,14 +1,14 @@
 import { S3Client } from '@aws-sdk/client-s3';
 import { UnprocessableEntityException } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { MulterModuleAsyncOptions } from '@nestjs/platform-express';
 import { MulterOptions } from '@nestjs/platform-express/multer/interfaces/multer-options.interface';
 import * as multerS3 from 'multer-s3';
 import { basename, extname } from 'path';
 
-export const multerOptionsFactory = async (
-  configService: ConfigService,
-): Promise<MulterOptions> => {
-  return {
+export const multerConfig: MulterModuleAsyncOptions = {
+  imports: [ConfigModule],
+  useFactory: async (configService: ConfigService): Promise<MulterOptions> => ({
     storage: multerS3({
       s3: new S3Client({
         region: configService.get('AWS_S3_REGION'),
@@ -36,5 +36,6 @@ export const multerOptionsFactory = async (
 
       return cb(new UnprocessableEntityException('NOT_IMAGE_FILES'), false);
     },
-  };
+  }),
+  inject: [ConfigService],
 };
