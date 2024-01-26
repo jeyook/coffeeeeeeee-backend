@@ -3,8 +3,8 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { ConfigService } from '@nestjs/config';
-import { UserService } from 'src/user/user.service';
-import { UserResponseDto } from '../user/dto/user-response.dto';
+import { UserService } from '../user/user.service';
+import { User } from '../entity/user.entity';
 
 @Injectable()
 export class TokenAuthStrategy extends PassportStrategy(Strategy) {
@@ -19,10 +19,11 @@ export class TokenAuthStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: any): Promise<UserResponseDto> {
+  async validate(payload: any): Promise<User> {
     const userId = payload.aud;
-    const user = await this.userService.findUserById(userId);
-    if (!user) throw new NotFoundException('USER_NOT_FOUND');
+    const userDto = await this.userService.findUserById(userId);
+    if (!userDto) throw new NotFoundException('USER_NOT_FOUND');
+    const user = userDto.toEntity();
     return user;
   }
 }
