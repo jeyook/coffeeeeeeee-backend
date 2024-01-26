@@ -34,7 +34,7 @@ export class UserResponseDto {
     this.updatedAt = user.updatedAt;
     this.deletedAt = user.deletedAt;
   }
-
+  
   private mapProviderToDto = (provider: Provider) => provider;
   private mapUserRoleToDto = (userRole: UserRole) => userRole;
 
