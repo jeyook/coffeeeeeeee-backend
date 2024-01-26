@@ -1,6 +1,6 @@
-import { Provider } from 'src/entity/provider.entity';
-import { UserRole } from 'src/entity/user-role.entity';
-import { User } from 'src/entity/user.entity';
+import { Provider } from '../../entity/provider.entity';
+import { UserRole } from '../../entity/user-role.entity';
+import { User } from '../../entity/user.entity';
 
 export class OAuthUserDto {
   readonly email: string;
@@ -8,7 +8,7 @@ export class OAuthUserDto {
   readonly socialId: string;
   readonly providerName: string;
 
-  constructor(email: string, nickname: string, providerName?: string, socialId?: string) {
+  constructor(email: string, nickname: string, providerName: string, socialId: string) {
     this.email = email;
     this.nickname = nickname;
     this.providerName = providerName;

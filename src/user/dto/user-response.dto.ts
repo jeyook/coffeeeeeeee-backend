@@ -4,10 +4,12 @@ import { UserRole } from '../../entity/user-role.entity';
 
 interface ProviderDto {
   id: number;
+  name: string;
 }
 
 interface UserRoleDto {
   id: number;
+  role: string;
 }
 
 export class UserResponseDto {
@@ -17,6 +19,9 @@ export class UserResponseDto {
   private socialId: string;
   private provider: ProviderDto;
   private userRole: UserRoleDto;
+  private createdAt: Date;
+  private updatedAt: Date;
+  private deletedAt: Date;
 
   constructor(user: User) {
     this.id = user.id;
@@ -25,10 +30,21 @@ export class UserResponseDto {
     this.socialId = user.socialId;
     this.provider = this.mapProviderToDto(user.provider);
     this.userRole = this.mapUserRoleToDto(user.userRole);
+    this.createdAt = user.createdAt;
+    this.updatedAt = user.updatedAt;
+    this.deletedAt = user.deletedAt;
   }
 
-  private mapProviderToDto = (provider: Provider) => ({ id: provider.id });
-  private mapUserRoleToDto = (userRole: UserRole) => ({ id: userRole.id });
+  private mapProviderToDto = (provider: Provider) => provider;
+  private mapUserRoleToDto = (userRole: UserRole) => userRole;
 
-  getId = () => this.id;
+  toEntity(): User {
+    const user = new User();
+    user.email = this.email;
+    user.nickname = this.nickname;
+    user.provider = this.provider;
+    user.userRole = this.userRole;
+    user.socialId = this.socialId;
+    return user;
+  }
 }
