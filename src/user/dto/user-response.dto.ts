@@ -29,4 +29,6 @@ export class UserResponseDto {
 
   private mapProviderToDto = (provider: Provider) => ({ id: provider.id });
   private mapUserRoleToDto = (userRole: UserRole) => ({ id: userRole.id });
+
+  getId = () => this.id;
 }

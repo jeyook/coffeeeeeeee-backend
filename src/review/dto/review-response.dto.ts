@@ -21,16 +21,19 @@ export class ReviewResponseDto {
 
   private content: string;
 
+  private isMyReview: boolean;
+
   private user: ReviewUserDto;
 
   private images: ReviewImageDto[];
 
   private tag: TagResponseDto[];
 
-  constructor(review: Review) {
+  constructor(review: Review, user?: User) {
     this.id = review.id;
     this.rating = review.rating;
     this.content = review.content;
+    this.isMyReview = review.user.id === user?.id;
     this.user = this.mapUserToDto(review.user);
     this.images = this.mapReviewImagesToDto(review.reviewImages);
     this.tag = this.mapReviewTagsToDto(review.reviewTags);
