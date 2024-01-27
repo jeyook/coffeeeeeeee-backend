@@ -19,7 +19,7 @@ export class SectionResponseDto {
     this.id = section.id;
     this.name = section.name;
     this.geom = section.geom;
-    this.cafe = this.mapCafeToDto(section.cafe);
+    this.cafe = this.mapCafeToDto(section.cafes);
   }
 
   private mapCafeToDto(cafes: Cafe[]): SectionCafeDto[] {

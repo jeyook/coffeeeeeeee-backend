@@ -13,6 +13,6 @@ export class Section extends Base {
   @Column({ type: 'geometry', spatialFeatureType: 'Polygon' })
   geom: object;
 
-  @OneToMany(() => Cafe, (cafe) => cafe.cafeSection, { cascade: true, eager: true })
-  cafe: Cafe[];
+  @OneToMany(() => Cafe, (cafes) => cafes.cafeSection, { eager: true })
+  cafes: Cafe[];
 }
