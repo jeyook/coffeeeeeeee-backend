@@ -22,14 +22,14 @@ export class SectionResponseDto {
     this.cafe = this.mapCafeToDto(section.cafe);
   }
 
-  private mapCafeToDto(cafe: Cafe[]): SectionCafeDto[] {
-    return cafe.map((c) => ({
-      id: c.id,
-      placeId: c.placeId,
-      address: c.address,
-      name: c.name,
-      mapX: c.mapX,
-      mapY: c.mapY,
+  private mapCafeToDto(cafes: Cafe[]): SectionCafeDto[] {
+    return cafes.map((cafe) => ({
+      id: cafe.id,
+      placeId: cafe.placeId,
+      address: cafe.address,
+      name: cafe.name,
+      mapX: cafe.mapX,
+      mapY: cafe.mapY,
     }));
   }
 }
