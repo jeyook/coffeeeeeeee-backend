@@ -1,5 +1,6 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 import { Base } from './base.entity';
+import { Cafe } from './cafe.entity';
 
 @Entity()
 export class Section extends Base {
@@ -11,4 +12,7 @@ export class Section extends Base {
 
   @Column({ type: 'geometry', spatialFeatureType: 'Polygon' })
   geom: object;
+
+  @OneToMany(() => Cafe, (cafes) => cafes.cafeSection, { eager: true })
+  cafes: Cafe[];
 }
