@@ -2,6 +2,7 @@ import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { SectionController } from './section.controller';
 import { SectionService } from './section.service';
+import { BadRequestException } from '@nestjs/common';
 
 describe('SectionController', () => {
   let sectionController: SectionController;
@@ -65,6 +66,10 @@ describe('SectionController', () => {
       expect(result).toEqual(expectedResult);
       expect(spyGetSectionByNameFn).toHaveBeenCalledTimes(1);
       expect(spyGetSectionByNameFn).toHaveBeenCalledWith(mockSectionName);
+    });
+
+    it('FAILURE: sectionName 값이 없으면 BadRequestException을 반환한다.', async () => {
+      await expect(sectionController.getSectionByName('')).rejects.toThrow(BadRequestException);
     });
   });
 });
