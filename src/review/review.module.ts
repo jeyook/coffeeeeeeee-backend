@@ -1,8 +1,7 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MulterModule } from '@nestjs/platform-express';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { multerOptionsFactory } from '../config/factory/multer-options.factory';
+import { multerConfig } from '../config/multer.config';
 import { Cafe } from '../entity/cafe.entity';
 import { Review } from '../entity/review.entity';
 import { Tag } from '../entity/tag.entity';
@@ -12,11 +11,7 @@ import { ReviewService } from './review.service';
 @Module({
   imports: [
     TypeOrmModule.forFeature([Review, Cafe, Tag]),
-    MulterModule.registerAsync({
-      imports: [ConfigModule],
-      useFactory: multerOptionsFactory,
-      inject: [ConfigService],
-    }),
+    MulterModule.registerAsync(multerConfig),
   ],
   controllers: [ReviewController],
   providers: [ReviewService],

@@ -44,6 +44,7 @@ export class ReviewService {
   async getPaginatedReview(
     cafeId: number,
     dto: PageRequestDto,
+    user?: User,
   ): Promise<PageResponseDto<ReviewResponseDto>> {
     const foundCafe = await this.cafeRepository.findOneBy({ id: cafeId });
     if (!foundCafe) throw new NotFoundException('NOT_FOUND_CAFE');
@@ -56,14 +57,10 @@ export class ReviewService {
       },
       take: limit,
       skip: offset,
-      order: {
-        createdAt: 'DESC',
-      },
+      order: { createdAt: 'DESC' },
       relations: {
         user: true,
-        reviewTags: {
-          tag: true,
-        },
+        reviewTags: { tag: true },
       },
     });
 
@@ -72,7 +69,7 @@ export class ReviewService {
     if (foundReviewsTotalPage < currentPage) throw new BadRequestException('PAGE_OUT_OF_RANGE');
 
     const reviewResponseDtos = foundReviews.map(
-      (foundReview) => new ReviewResponseDto(foundReview),
+      (foundReview) => new ReviewResponseDto(foundReview, user),
     );
 
     return new PageResponseDto<ReviewResponseDto>(
