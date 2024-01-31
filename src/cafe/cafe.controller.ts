@@ -49,4 +49,11 @@ export class CafeController {
     const data = await this.cafeService.getCafeById(cafeId);
     return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, data);
   }
+
+  async getCafeListBySectionId(
+    @Param('sectionId', ParseIntPipe) sectionId: number,
+  ): Promise<CommonResponseDto<CafeResponseDto[]>> {
+    const data = await this.cafeService.getCafeListBySectionId(sectionId);
+    return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, data);
+  }
 }

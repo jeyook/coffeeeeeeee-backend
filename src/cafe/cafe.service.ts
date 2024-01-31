@@ -20,4 +20,16 @@ export class CafeService {
 
     return new CafeResponseDto(cafe);
   }
+
+  async getCafeListBySectionId(sectionId: number): Promise<CafeResponseDto[]> {
+    const cafeList = await this.cafeRepository.find({
+      relations: { cafeSection: true },
+      where: {
+        cafeSection: {
+          id: sectionId,
+        },
+      },
+    });
+    return cafeList.map((cafe) => new CafeResponseDto(cafe));
+  }
 }
