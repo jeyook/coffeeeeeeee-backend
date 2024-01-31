@@ -27,14 +27,17 @@ export class ReviewService {
     const foundCafe = await this.cafeRepository.findOneBy({ id: cafeId });
     if (!foundCafe) throw new NotFoundException('NOT_FOUND_CAFE');
 
-    const foundTags = await Promise.all(
-      dto.tagIds.map(async (tagId) => {
-        const foundTag = await this.tagRepository.findOneBy({ id: tagId });
-        if (!foundTag) throw new NotFoundException('NOT_FOUND_TAG');
+    let foundTags = null;
+    if (dto.tagIds) {
+      foundTags = await Promise.all(
+        dto.tagIds.map(async (tagId) => {
+          const foundTag = await this.tagRepository.findOneBy({ id: tagId });
+          if (!foundTag) throw new NotFoundException('NOT_FOUND_TAG');
 
-        return foundTag;
-      }),
-    );
+          return foundTag;
+        }),
+      );
+    }
 
     const review = dto.toEntity(user, foundCafe, images, foundTags);
 
