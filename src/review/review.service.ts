@@ -106,14 +106,17 @@ export class ReviewService {
       });
       if (!foundReview) throw new NotFoundException('NOT_FOUND_REVIEW');
 
-      const foundTags = await Promise.all(
-        dto.tagIds.map(async (tagId) => {
-          const foundTag = await this.tagRepository.findOneBy({ id: tagId });
-          if (!foundTag) throw new NotFoundException('NOT_FOUND_TAG');
+      let foundTags = null;
+      if (dto.tagIds) {
+        foundTags = await Promise.all(
+          dto.tagIds.map(async (tagId) => {
+            const foundTag = await this.tagRepository.findOneBy({ id: tagId });
+            if (!foundTag) throw new NotFoundException('NOT_FOUND_TAG');
 
-          return foundTag;
-        }),
-      );
+            return foundTag;
+          }),
+        );
+      }
 
       await this.initTag(foundReview.reviewTags, transactionalEntityManager);
 
