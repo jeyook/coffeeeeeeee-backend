@@ -79,4 +79,22 @@ export class ReviewService {
       reviewResponseDtos,
     );
   }
+
+  async deleteReview(user: User, cafeId: number, reviewId: number): Promise<void> {
+    const foundCafe = await this.cafeRepository.findOneBy({ id: cafeId });
+    if (!foundCafe) throw new NotFoundException('NOT_FOUND_CAFE');
+
+    const foundReview = await this.reviewRepository.findOneBy({
+      id: reviewId,
+      cafe: {
+        id: foundCafe.id,
+      },
+      user: {
+        id: user.id,
+      },
+    });
+    if (!foundReview) throw new NotFoundException('NOT_FOUND_REVIEW');
+
+    await this.reviewRepository.softRemove(foundReview);
+  }
 }
