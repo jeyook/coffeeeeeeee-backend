@@ -92,7 +92,7 @@ describe('BookmarkController', () => {
     it('SUCCESS : 북마크를 정상적으로 조회.', async () => {
       const spyGetPaginatedBookmarkFn = jest.spyOn(mockBookmarkService, 'getPaginatedBookmark');
 
-      spyGetPaginatedBookmarkFn.mockResolvedValueOnce(mockPageRequestDto);
+      spyGetPaginatedBookmarkFn.mockResolvedValueOnce(mockPageResponseDto);
 
       const expectedResult = {
         message: 'READ_SUCCESS',

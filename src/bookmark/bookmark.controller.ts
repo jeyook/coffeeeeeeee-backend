@@ -9,7 +9,7 @@ import { PageRequestDto } from '../common/dto/page-request.dto';
 import { PageResponseDto } from 'src/common/dto/page-response.dto';
 import { BookmarkResponseDto } from './dto/bookmark-resposnse.dto';
 
-@Controller('bookmark')
+@Controller('/bookmark')
 export class BookmarkController {
   constructor(private bookmarkService: BookmarkService) {}
   @Get()
@@ -19,6 +19,7 @@ export class BookmarkController {
     @Query() dto: PageRequestDto,
   ): Promise<CommonResponseDto<PageResponseDto<BookmarkResponseDto>>> {
     const result = await this.bookmarkService.getPaginatedBookmark(user, dto);
+
     return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, result);
   }
 
