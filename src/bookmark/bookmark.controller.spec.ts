@@ -67,12 +67,18 @@ describe('BookmarkController', () => {
       email: 'test@test.com',
       socialId: 'test1234',
     };
+    const mockCafe = {
+      id: 1,
+      name: '테스트 카페',
+    };
     const mockPageRequestDto = {
       pageNo: 1,
       pageSize: 10,
     };
     const mockBookmarkResponseDto = {
       //mock data 작성
+      user: mockUser,
+      cafe: mockCafe,
     };
 
     const mockPageResponseDto = {
