@@ -67,40 +67,42 @@ describe('BookmarkController', () => {
       email: 'test@test.com',
       socialId: 'test1234',
     };
-    const mockPageRequestDto: PageRequestDto = new PageRequestDto();
+    const mockPageRequestDto = {
+      pageNo: 1,
+      pageSize: 10,
+    };
+    const mockBookmarkResponseDto = {
+      //mock data 작성
+    };
 
-    const mockBookmarkResponseDto: BookmarkResponseDto[] = [];
+    const mockPageResponseDto = {
+      currentPage: 1,
+      pageSize: 10,
+      totalCount: 20,
+      totalPage: 2,
+      items: [mockBookmarkResponseDto],
+    };
 
     it('SUCCESS : 북마크를 정상적으로 조회.', async () => {
-      // mockBookmarkService.getPaginatedBookmark.mockResolvedValueOnce(mockBookmarkResponseDto);
+      const spyGetPaginatedBookmarkFn = jest.spyOn(mockBookmarkService, 'getPaginatedBookmark');
 
-      const mockdata = mockBookmarkService.getPaginatedBookmark.mockResolvedValueOnce(
-        new PageResponseDto<BookmarkResponseDto>(
-          1,
-          mockBookmarkResponseDto.length,
-          mockBookmarkResponseDto.length,
-          mockBookmarkResponseDto,
-        ),
-      );
+      spyGetPaginatedBookmarkFn.mockResolvedValueOnce(mockPageRequestDto);
 
-      // Expected result
-      const expectedResult: CommonResponseDto<PageResponseDto<BookmarkResponseDto>> = {
-        message: ResponseMessage.READ_SUCCESS,
+      const expectedResult = {
+        message: 'READ_SUCCESS',
         statusCode: 200,
-        data: {
-          items: mockBookmarkResponseDto,
-          totalCount: mockBookmarkResponseDto.length,
-        },
+        data: mockPageResponseDto,
       };
 
       // When
       const result = await bookmarkController.getPaginatedBookmark(
         mockUser as User,
-        mockPageRequestDto,
+        mockPageRequestDto as PageRequestDto,
       );
 
       // Then
       expect(result).toEqual(expectedResult);
+      expect(spyGetPaginatedBookmarkFn).toHaveBeenCalledTimes(1);
       expect(mockBookmarkService.getPaginatedBookmark).toHaveBeenCalledWith(
         mockUser,
         mockPageRequestDto,
