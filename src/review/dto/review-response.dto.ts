@@ -27,7 +27,7 @@ export class ReviewResponseDto {
 
   private images: ReviewImageDto[];
 
-  private tag: TagResponseDto[];
+  private tags: TagResponseDto[];
 
   constructor(review: Review, user?: User) {
     this.id = review.id;
@@ -36,7 +36,7 @@ export class ReviewResponseDto {
     this.isMyReview = review.user.id === user?.id;
     this.user = this.mapUserToDto(review.user);
     this.images = this.mapReviewImagesToDto(review.reviewImages);
-    this.tag = this.mapReviewTagsToDto(review.reviewTags);
+    this.tags = this.mapReviewTagsToDto(review.reviewTags);
   }
 
   private mapUserToDto(user: User): ReviewUserDto {
@@ -59,7 +59,7 @@ export class ReviewResponseDto {
       });
   }
 
-  private mapReviewTagsToDto = (reviewTags: ReviewTag[]): TagResponseDto[] => {
+  private mapReviewTagsToDto(reviewTags: ReviewTag[]): TagResponseDto[] {
     return reviewTags.map((reviewTag) => new TagResponseDto(reviewTag.tag.id, reviewTag.tag.name));
-  };
+  }
 }
