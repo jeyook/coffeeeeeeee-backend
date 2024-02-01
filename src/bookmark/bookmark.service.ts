@@ -35,7 +35,6 @@ export class BookmarkService {
     const bookmarkResponseDtos = foundBookmarks.map(
       (foundBookmark) => new BookmarkResponseDto(foundBookmark),
     );
-    console.log('result: ', bookmarkResponseDtos);
 
     return new PageResponseDto<BookmarkResponseDto>(
       currentPage,

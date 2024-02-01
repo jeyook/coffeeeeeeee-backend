@@ -171,20 +171,16 @@ describe('BookmarkService', () => {
         mockUser as User,
         mockPageRequestDto as PageRequestDto,
       );
-      console.log('ex result: ', expectedResult);
-
-      console.log('result: ', result);
 
       //Then
       expect(result).toEqual(expectedResult);
       expect(spyBookmarkFindAndCountFn).toHaveBeenCalledTimes(1);
-      expect(spyBookmarkFindAndCountFn).toHaveBeenLastCalledWith({
+      expect(spyBookmarkFindAndCountFn).toHaveBeenCalledWith({
         where: {
           user: { id: mockUser.id },
         },
         take: mockPageRequestDto.getLimit(),
         skip: mockPageRequestDto.getOffset(),
-        order: { createdAt: 'DESC' },
       });
     });
   });

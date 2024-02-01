@@ -140,7 +140,6 @@ describe('ReviewController', () => {
         mockPageRequestDto as PageRequestDto,
         mockUser as User,
       );
-      console.log('result : ', result);
 
       // Then
       expect(result).toEqual(expectedResult);
