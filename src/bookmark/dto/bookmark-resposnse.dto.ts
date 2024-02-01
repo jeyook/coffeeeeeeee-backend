@@ -17,15 +17,15 @@ export class BookmarkResponseDto {
     this.user = this.mapUserToDto(bookmark.user);
     this.cafe = this.mapCafeToDto(bookmark.cafe);
   }
-  mapUserToDto = (user: User): BookmarkUserDto => {
+  private mapUserToDto(user: User): BookmarkUserDto {
     return {
       id: user.id,
     };
-  };
+  }
 
-  mapCafeToDto = (cafe: Cafe): BookmarkUserDto => {
+  private mapCafeToDto(cafe: Cafe): BookmarkCafeDto {
     return {
       id: cafe.id,
     };
-  };
+  }
 }

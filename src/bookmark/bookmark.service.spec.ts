@@ -5,6 +5,7 @@ import { Bookmark } from '../entity/bookmark.entity';
 import { Cafe } from '../entity/cafe.entity';
 import { User } from '../entity/user.entity';
 import { HttpStatus, NotFoundException } from '@nestjs/common';
+import { PageRequestDto } from '../common/dto/page-request.dto';
 
 describe('BookmarkService', () => {
   let bookmarkService: BookmarkService;
@@ -12,6 +13,7 @@ describe('BookmarkService', () => {
   const mockBookmarkRepository = {
     save: jest.fn(),
     create: jest.fn(),
+    findAndCount: jest.fn(),
   };
   const mockCafeRepository = {
     findOneBy: jest.fn(),
@@ -33,6 +35,10 @@ describe('BookmarkService', () => {
     }).compile();
 
     bookmarkService = module.get<BookmarkService>(BookmarkService);
+  });
+
+  afterEach(() => {
+    jest.clearAllMocks();
   });
 
   it('should be defined', () => {
@@ -97,6 +103,89 @@ describe('BookmarkService', () => {
         });
       }
       expect(hasThrown).toBeTruthy();
+    });
+  });
+
+  describe('getPaginatedBookmark()', () => {
+    const mockUser = {
+      id: 1,
+      nickname: '테스트',
+      email: 'test@test.com',
+      socialId: 'test1234',
+    };
+    const mockCafe = {
+      id: 1,
+      placeId: 1,
+      address: '주소',
+      name: '목카페',
+      mapX: 123,
+      mapY: 456,
+      phoneNumber: '010-1234-5678',
+      imageUrl: 'https://image.imgage',
+      homepageUrl: 'https://homepage.homepage',
+    };
+    const mockPageRequestDto = {
+      pageNo: 2,
+      getOffset: function (): number {
+        return 10;
+      },
+      getLimit: function (): number {
+        return 10;
+      },
+    };
+    const mockBookmarks = [
+      {
+        user: {
+          id: 1,
+        },
+        cafe: {
+          id: 1,
+        },
+      },
+    ];
+    const mockBookmarkResponseDto = {
+      user: {
+        id: 1,
+      },
+      cafe: {
+        id: 1,
+      },
+    };
+    let mockBookmarkTotalCount = 20;
+
+    it('SUCCESS : 북마크를 정상적으로 조회한다.', async () => {
+      // Given
+      const spyBookmarkFindAndCountFn = jest.spyOn(mockBookmarkRepository, 'findAndCount');
+      spyBookmarkFindAndCountFn.mockResolvedValueOnce([mockBookmarks, mockBookmarkTotalCount]);
+
+      const expectedResult = {
+        currentPage: mockPageRequestDto.pageNo,
+        pageSize: mockPageRequestDto.getLimit(),
+        totalCount: mockBookmarkTotalCount,
+        totalPage: Math.ceil(mockBookmarkTotalCount / mockPageRequestDto.getLimit()),
+        items: [mockBookmarkResponseDto],
+      };
+
+      //When
+      const result = await bookmarkService.getPaginatedBookmark(
+        mockUser as User,
+        mockPageRequestDto as PageRequestDto,
+      );
+      console.log('ex result: ', expectedResult);
+
+      console.log('result: ', result);
+
+      //Then
+      expect(result).toEqual(expectedResult);
+      expect(spyBookmarkFindAndCountFn).toHaveBeenCalledTimes(1);
+      expect(spyBookmarkFindAndCountFn).toHaveBeenLastCalledWith({
+        where: {
+          user: { id: mockUser.id },
+        },
+        take: mockPageRequestDto.getLimit(),
+        skip: mockPageRequestDto.getOffset(),
+        order: { createdAt: 'DESC' },
+      });
     });
   });
 });

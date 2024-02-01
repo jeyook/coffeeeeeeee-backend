@@ -20,8 +20,6 @@ export class BookmarkService {
     dto: PageRequestDto,
   ): Promise<PageResponseDto<BookmarkResponseDto>> {
     // 조회기능 구현시 사용
-    console.log('hello service', user, dto);
-
     const limit = dto.getLimit();
     const offset = dto.getOffset();
     const [foundBookmarks, foundBookmarkTotalCount] = await this.bookmarkRepository.findAndCount({
