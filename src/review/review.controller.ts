@@ -56,6 +56,18 @@ export class ReviewController {
     return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, result);
   }
 
+  @Get('/:cafeId/review/:reviewId')
+  @UseGuards(TokenAuthGuard)
+  async getReviewOne(
+    @AuthUserData() user: User,
+    @Param('cafeId', ParseIntPipe) cafeId: number,
+    @Param('reviewId', ParseIntPipe) reviewId: number,
+  ): Promise<CommonResponseDto<ReviewResponseDto>> {
+    const result = await this.reviewService.getReviewOne(user, cafeId, reviewId);
+
+    return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, result);
+  }
+
   @Delete('/:cafeId/review/:reviewId')
   @UseGuards(TokenAuthGuard)
   async deleteReview(

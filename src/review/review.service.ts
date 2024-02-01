@@ -83,6 +83,30 @@ export class ReviewService {
     );
   }
 
+  async getReviewOne(user: User, cafeId: number, reviewId: number): Promise<ReviewResponseDto> {
+    const foundCafe = await this.cafeRepository.findOneBy({ id: cafeId });
+    if (!foundCafe) throw new NotFoundException('NOT_FOUND_CAFE');
+
+    const foundReview = await this.reviewRepository.findOne({
+      where: {
+        id: reviewId,
+        cafe: {
+          id: foundCafe.id,
+        },
+        user: {
+          id: user.id,
+        },
+      },
+      relations: {
+        user: true,
+        reviewTags: { tag: true },
+      },
+    });
+    if (!foundReview) throw new NotFoundException('NOT_FOUND_REVIEW');
+
+    return new ReviewResponseDto(foundReview, user);
+  }
+
   async deleteReview(user: User, cafeId: number, reviewId: number): Promise<void> {
     const foundCafe = await this.cafeRepository.findOneBy({ id: cafeId });
     if (!foundCafe) throw new NotFoundException('NOT_FOUND_CAFE');
