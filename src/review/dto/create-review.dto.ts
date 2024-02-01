@@ -1,4 +1,4 @@
-import { ArrayMaxSize, ArrayMinSize, IsArray, IsNotEmpty, MaxLength } from 'class-validator';
+import { IsNotEmpty, MaxLength } from 'class-validator';
 import { Cafe } from '../../entity/cafe.entity';
 import { ReviewImage } from '../../entity/review-image.entity';
 import { ReviewTag } from '../../entity/review-tag.entity';
@@ -14,10 +14,10 @@ export class CreateReviewDto {
   @MaxLength(500)
   readonly content: string;
 
-  // TODO: 태그 최대, 최소 얼마나?
-  @IsArray()
-  @ArrayMaxSize(2)
-  @ArrayMinSize(2)
+  // TODO: 태그 최대, 최소 얼마나? (제외)
+  // @IsArray()
+  // @ArrayMaxSize(2)
+  // @ArrayMinSize(2)
   readonly tagIds: number[];
 
   toEntity(user: User, cafe: Cafe, images: Express.MulterS3.File[], tags: Tag[]): Review {
@@ -28,7 +28,7 @@ export class CreateReviewDto {
       return reviewImage;
     });
 
-    const reviewTags = tags.map((tag) => {
+    const reviewTags = tags?.map((tag) => {
       const reviewTag = new ReviewTag();
       reviewTag.tag = tag;
 
