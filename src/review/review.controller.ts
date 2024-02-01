@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -72,5 +73,17 @@ export class ReviewController {
     await this.reviewService.updateReview(user, cafeId, reviewId, images, dto);
 
     return CommonResponseDto.successNoContent(ResponseMessage.UPDATE_SUCCESS);
+  }
+
+  @Delete('/:cafeId/review/:reviewId')
+  @UseGuards(TokenAuthGuard)
+  async deleteReview(
+    @AuthUserData() user: User,
+    @Param('cafeId', ParseIntPipe) cafeId: number,
+    @Param('reviewId', ParseIntPipe) reviewId: number,
+  ): Promise<CommonResponseDto<void>> {
+    await this.reviewService.deleteReview(user, cafeId, reviewId);
+
+    return CommonResponseDto.successNoContent(ResponseMessage.DELETE_SUCCESS);
   }
 }
