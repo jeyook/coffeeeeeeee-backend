@@ -15,6 +15,11 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
+  // TODO: e2e 테스트 작성할 때 CI/CD 플로우에 넣기
+  afterAll(async () => {
+    await app.close();
+  });
+
   it('/ (GET)', () => {
     return request(app.getHttpServer()).get('/').expect(200).expect('Hello World!');
   });
