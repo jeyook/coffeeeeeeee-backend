@@ -7,15 +7,16 @@ import { AppService } from './app.service';
 import { AuthController } from './auth/auth.controller';
 import { AuthModule } from './auth/auth.module';
 import { BookmarkModule } from './bookmark/bookmark.module';
+import { CafeModule } from './cafe/cafe.module';
 import { typeOrmConfig } from './config/type-orm.config';
 import { ReviewModule } from './review/review.module';
-import { UserModule } from './user/user.module';
-import { CafeModule } from './cafe/cafe.module';
 import { SectionModule } from './section/section.module';
+import { UserModule } from './user/user.module';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
+      envFilePath: process.env.NODE_ENV === 'production' ? '.production.env' : '.env',
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync(typeOrmConfig),
