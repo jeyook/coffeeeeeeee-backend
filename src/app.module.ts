@@ -16,7 +16,6 @@ import { UserModule } from './user/user.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
-      envFilePath: process.env.NODE_ENV === 'production' ? '.production.env' : '.env',
       isGlobal: true,
     }),
     TypeOrmModule.forRootAsync(typeOrmConfig),
