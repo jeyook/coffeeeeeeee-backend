@@ -13,13 +13,13 @@ export class SectionResponseDto {
   private id: number;
   private name: string;
   private geom: object;
-  private cafe: SectionCafeDto[];
+  private cafes: SectionCafeDto[];
 
   constructor(section: Section) {
     this.id = section.id;
     this.name = section.name;
     this.geom = section.geom;
-    this.cafe = this.mapCafeToDto(section.cafes);
+    this.cafes = this.mapCafeToDto(section.cafes);
   }
 
   private mapCafeToDto(cafes: Cafe[]): SectionCafeDto[] {
