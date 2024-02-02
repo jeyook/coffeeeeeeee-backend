@@ -1,8 +1,9 @@
 import { Controller, Get, Param, ParseIntPipe } from '@nestjs/common';
+import { ApiCreatedResponse, ApiForbiddenResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+
 import { CafeService } from './cafe.service';
 import { CommonResponseDto } from '../common/dto/common-response.dto';
 import { ResponseMessage } from '../common/dto/response-message.enum';
-import { ApiCreatedResponse, ApiForbiddenResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { CafeResponseDto } from './dto/cafe-response.dto';
 
 @Controller('cafe')
@@ -47,6 +48,13 @@ export class CafeController {
     @Param('cafeId', ParseIntPipe) cafeId: number, //transform true
   ): Promise<CommonResponseDto<CafeResponseDto>> {
     const data = await this.cafeService.getCafeById(cafeId);
+    return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, data);
+  }
+
+  async getCafeListBySectionId(
+    @Param('sectionId', ParseIntPipe) sectionId: number,
+  ): Promise<CommonResponseDto<CafeResponseDto[]>> {
+    const data = await this.cafeService.getCafeListBySectionId(sectionId);
     return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, data);
   }
 }
