@@ -71,4 +71,4 @@ jobs:
             sudo docker rm -f $(docker ps -qa)
             sudo docker rmi -f $(docker images -q)
             sudo docker pull ${{ secrets.DOCKER_HUB_ID }}/${{ secrets.DOCKER_REPO }}
-            sudo docker run -d -p 3000:3000 --name nest ${{ secrets.DOCKER_HUB_ID }}/${{ secrets.DOCKER_REPO }}
+            sudo docker run -d -p 3000:3000 --name nest ${{ secrets.DOCKER_HUB_ID }}/${{ secrets.DOCKER_REPO }}:${{ steps.timestamp.outputs.timestamp }}
