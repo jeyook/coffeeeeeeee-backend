@@ -35,7 +35,7 @@ jobs:
 
       - name: Create default .env
         run: |
-          echo "${{ vars.PRODUCTION_ENV }}" >> .env
+          echo "${{ secrets.PRODUCTION_ENV }}" >> .env
         shell: bash
 
       - name: Use Node.js ${{ matrix.node-version }}
