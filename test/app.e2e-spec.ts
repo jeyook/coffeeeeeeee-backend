@@ -15,7 +15,7 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  // TODO: e2e 테스트 작성할 때 CI/CD 플로우에 넣기
+  // TODO: e2e 테스트 작성할 때 CI/CD 플로우에 넣기 ㅎㅎ
   afterAll(async () => {
     await app.close();
   });
