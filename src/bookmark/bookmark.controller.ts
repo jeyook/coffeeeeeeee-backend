@@ -1,4 +1,14 @@
-import { Body, Controller, Get, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  ParseIntPipe,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { BookmarkService } from './bookmark.service';
 import { User } from '../entity/user.entity';
 import { TokenAuthGuard } from '../auth/token-auth.guard';
@@ -9,7 +19,7 @@ import { PageRequestDto } from '../common/dto/page-request.dto';
 import { PageResponseDto } from 'src/common/dto/page-response.dto';
 import { BookmarkResponseDto } from './dto/bookmark-resposnse.dto';
 
-@Controller('bookmark')
+@Controller('/bookmark')
 export class BookmarkController {
   constructor(private bookmarkService: BookmarkService) {}
   @Get()
@@ -31,5 +41,16 @@ export class BookmarkController {
     await this.bookmarkService.createBookmark(user, cafeId);
 
     return CommonResponseDto.successNoContent(ResponseMessage.CREATE_SUCCESS);
+  }
+
+  @Delete('/:cafeId')
+  @UseGuards(TokenAuthGuard)
+  async deleteBookmark(
+    @AuthUserData() user: User,
+    @Param('cafeId', ParseIntPipe) cafeId: number,
+  ): Promise<CommonResponseDto<void>> {
+    await this.bookmarkService.deleteBookmark(user, cafeId);
+
+    return CommonResponseDto.successNoContent(ResponseMessage.DELETE_SUCCESS);
   }
 }
