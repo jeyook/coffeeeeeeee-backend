@@ -83,7 +83,7 @@ export class ReviewService {
     );
   }
 
-  async getReviewOne(user: User, cafeId: number, reviewId: number): Promise<ReviewResponseDto> {
+  async getOneReview(user: User, cafeId: number, reviewId: number): Promise<ReviewResponseDto> {
     const foundCafe = await this.cafeRepository.findOneBy({ id: cafeId });
     if (!foundCafe) throw new NotFoundException('NOT_FOUND_CAFE');
 

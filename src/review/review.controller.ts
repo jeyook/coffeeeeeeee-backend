@@ -58,12 +58,12 @@ export class ReviewController {
 
   @Get('/:cafeId/review/:reviewId')
   @UseGuards(TokenAuthGuard)
-  async getReviewOne(
+  async getOneReview(
     @AuthUserData() user: User,
     @Param('cafeId', ParseIntPipe) cafeId: number,
     @Param('reviewId', ParseIntPipe) reviewId: number,
   ): Promise<CommonResponseDto<ReviewResponseDto>> {
-    const result = await this.reviewService.getReviewOne(user, cafeId, reviewId);
+    const result = await this.reviewService.getOneReview(user, cafeId, reviewId);
 
     return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, result);
   }
