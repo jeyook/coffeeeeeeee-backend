@@ -25,7 +25,7 @@ export class LikeService {
   }
 
   async deleteLike(user: User, cafeId: number): Promise<void> {
-    const like = await this.likeRepository.find({
+    const like = await this.likeRepository.findOne({
       where: {
         user: user,
         cafe: { id: cafeId },
