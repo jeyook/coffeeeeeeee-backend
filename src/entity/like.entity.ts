@@ -1,8 +1,9 @@
-import { Entity, JoinColumn, ManyToOne, PrimaryColumn } from 'typeorm';
+import { Entity, JoinColumn, ManyToOne, PrimaryColumn, Unique } from 'typeorm';
 import { Cafe } from './cafe.entity';
 import { User } from './user.entity';
 
 @Entity()
+@Unique(['cafe', 'user']) //database에서 중복 원천 차단.
 export class Like {
   @PrimaryColumn({ type: 'integer', name: 'cafe_id' })
   @ManyToOne(() => Cafe, { onDelete: 'CASCADE' })
