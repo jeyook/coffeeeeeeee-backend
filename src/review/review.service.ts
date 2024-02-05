@@ -27,14 +27,17 @@ export class ReviewService {
     const foundCafe = await this.cafeRepository.findOneBy({ id: cafeId });
     if (!foundCafe) throw new NotFoundException('NOT_FOUND_CAFE');
 
-    const foundTags = await Promise.all(
-      dto.tagIds.map(async (tagId) => {
-        const foundTag = await this.tagRepository.findOneBy({ id: tagId });
-        if (!foundTag) throw new NotFoundException('NOT_FOUND_TAG');
+    let foundTags = null;
+    if (dto.tagIds) {
+      foundTags = await Promise.all(
+        dto.tagIds.map(async (tagId) => {
+          const foundTag = await this.tagRepository.findOneBy({ id: tagId });
+          if (!foundTag) throw new NotFoundException('NOT_FOUND_TAG');
 
-        return foundTag;
-      }),
-    );
+          return foundTag;
+        }),
+      );
+    }
 
     const review = dto.toEntity(user, foundCafe, images, foundTags);
 
@@ -78,5 +81,47 @@ export class ReviewService {
       limit,
       reviewResponseDtos,
     );
+  }
+
+  async getOneReview(user: User, cafeId: number, reviewId: number): Promise<ReviewResponseDto> {
+    const foundCafe = await this.cafeRepository.findOneBy({ id: cafeId });
+    if (!foundCafe) throw new NotFoundException('NOT_FOUND_CAFE');
+
+    const foundReview = await this.reviewRepository.findOne({
+      where: {
+        id: reviewId,
+        cafe: {
+          id: foundCafe.id,
+        },
+        user: {
+          id: user.id,
+        },
+      },
+      relations: {
+        user: true,
+        reviewTags: { tag: true },
+      },
+    });
+    if (!foundReview) throw new NotFoundException('NOT_FOUND_REVIEW');
+
+    return new ReviewResponseDto(foundReview, user);
+  }
+
+  async deleteReview(user: User, cafeId: number, reviewId: number): Promise<void> {
+    const foundCafe = await this.cafeRepository.findOneBy({ id: cafeId });
+    if (!foundCafe) throw new NotFoundException('NOT_FOUND_CAFE');
+
+    const foundReview = await this.reviewRepository.findOneBy({
+      id: reviewId,
+      cafe: {
+        id: foundCafe.id,
+      },
+      user: {
+        id: user.id,
+      },
+    });
+    if (!foundReview) throw new NotFoundException('NOT_FOUND_REVIEW');
+
+    await this.reviewRepository.softRemove(foundReview);
   }
 }

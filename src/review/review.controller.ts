@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   ParseIntPipe,
@@ -53,5 +54,29 @@ export class ReviewController {
     const result = await this.reviewService.getPaginatedReview(cafeId, dto, user);
 
     return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, result);
+  }
+
+  @Get('/:cafeId/review/:reviewId')
+  @UseGuards(TokenAuthGuard)
+  async getOneReview(
+    @AuthUserData() user: User,
+    @Param('cafeId', ParseIntPipe) cafeId: number,
+    @Param('reviewId', ParseIntPipe) reviewId: number,
+  ): Promise<CommonResponseDto<ReviewResponseDto>> {
+    const result = await this.reviewService.getOneReview(user, cafeId, reviewId);
+
+    return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, result);
+  }
+
+  @Delete('/:cafeId/review/:reviewId')
+  @UseGuards(TokenAuthGuard)
+  async deleteReview(
+    @AuthUserData() user: User,
+    @Param('cafeId', ParseIntPipe) cafeId: number,
+    @Param('reviewId', ParseIntPipe) reviewId: number,
+  ): Promise<CommonResponseDto<void>> {
+    await this.reviewService.deleteReview(user, cafeId, reviewId);
+
+    return CommonResponseDto.successNoContent(ResponseMessage.DELETE_SUCCESS);
   }
 }
