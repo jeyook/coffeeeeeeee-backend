@@ -24,6 +24,9 @@ export class LikeService {
     await this.likeRepository.save(like);
   }
   async getLikeCountByCafeId(cafeId: number): Promise<number> {
+    const cafe = await this.cafeRepository.findOneBy({ id: cafeId });
+    if (!cafe) throw new NotFoundException('CAFE_NOT_FOUND');
+
     const likeCount = await this.likeRepository
       .createQueryBuilder('like')
       .where('like.cafe_id = :cafeId', { cafeId })
