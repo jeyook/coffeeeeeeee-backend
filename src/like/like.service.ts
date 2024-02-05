@@ -23,4 +23,12 @@ export class LikeService {
 
     await this.likeRepository.save(like);
   }
+  async getLikeCountByCafeId(cafeId: number): Promise<number> {
+    const likeCount = await this.likeRepository
+      .createQueryBuilder('like')
+      .where('like.cafe_id = :cafeId', { cafeId })
+      .getCount();
+
+    return likeCount;
+  }
 }

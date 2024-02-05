@@ -1,4 +1,4 @@
-import { Controller, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common';
+import { Controller, Get, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common';
 import { TokenAuthGuard } from '../auth/token-auth.guard';
 import { AuthUserData } from '../auth/decorator/auth-user-data.decorator';
 import { CommonResponseDto } from '../common/dto/common-response.dto';
@@ -17,5 +17,13 @@ export class LikeController {
   ): Promise<CommonResponseDto<void>> {
     await this.likeService.createLike(user, cafeId);
     return CommonResponseDto.successNoContent(ResponseMessage.CREATE_SUCCESS);
+  }
+
+  @Get('/:cafeId/like')
+  async getLikeCountByCafeId(
+    @Param('cafeId', ParseIntPipe) cafeId: number,
+  ): Promise<CommonResponseDto<number>> {
+    const data = await this.likeService.getLikeCountByCafeId(cafeId);
+    return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, data);
   }
 }
