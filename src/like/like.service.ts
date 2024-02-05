@@ -23,4 +23,15 @@ export class LikeService {
 
     await this.likeRepository.save(like);
   }
+
+  async getUserCafeLikeStatus(user: User, cafeId: number): Promise<boolean> {
+    const like = await this.likeRepository.findOne({
+      where: {
+        user: user,
+        cafe: { id: cafeId },
+      },
+    });
+
+    return !!like;
+  }
 }
