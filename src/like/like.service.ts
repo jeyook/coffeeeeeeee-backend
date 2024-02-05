@@ -23,4 +23,16 @@ export class LikeService {
 
     await this.likeRepository.save(like);
   }
+
+  async deleteLike(user: User, cafeId: number): Promise<void> {
+    const like = await this.likeRepository.find({
+      where: {
+        user: user,
+        cafe: { id: cafeId },
+      },
+    });
+    if (!like) throw new NotFoundException('LIKE_NOT_FOUND');
+
+    await this.likeRepository.remove(like);
+  }
 }

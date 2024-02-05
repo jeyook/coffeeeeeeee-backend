@@ -1,4 +1,4 @@
-import { Controller, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common';
+import { Controller, Delete, Param, ParseIntPipe, Post, UseGuards } from '@nestjs/common';
 import { TokenAuthGuard } from '../auth/token-auth.guard';
 import { AuthUserData } from '../auth/decorator/auth-user-data.decorator';
 import { CommonResponseDto } from '../common/dto/common-response.dto';
@@ -17,5 +17,15 @@ export class LikeController {
   ): Promise<CommonResponseDto<void>> {
     await this.likeService.createLike(user, cafeId);
     return CommonResponseDto.successNoContent(ResponseMessage.CREATE_SUCCESS);
+  }
+
+  @Delete('/:cafeId/like')
+  @UseGuards(TokenAuthGuard)
+  async deleteLike(
+    @AuthUserData() user: User,
+    @Param('cafeId', ParseIntPipe) cafeId: number,
+  ): Promise<CommonResponseDto<void>> {
+    await this.likeService.deleteLike(user, cafeId);
+    return CommonResponseDto.successNoContent(ResponseMessage.DELETE_SUCCESS);
   }
 }
