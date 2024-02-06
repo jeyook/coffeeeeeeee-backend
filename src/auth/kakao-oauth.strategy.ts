@@ -49,6 +49,6 @@ export class KakaoOAuthStrategy extends PassportStrategy(Strategy, 'kakao') {
     const user = userDto.toEntity();
     const token = this.authService.sign({ aud: user.id });
 
-    done(null, { token: token });
+    done(null, { ...user, token: token });
   }
 }
