@@ -40,6 +40,7 @@ export class UserResponseDto {
 
   toEntity(): User {
     const user = new User();
+    user.id = this.id;
     user.email = this.email;
     user.nickname = this.nickname;
     user.provider = this.provider;
