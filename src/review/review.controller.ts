@@ -58,6 +58,18 @@ export class ReviewController {
     return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, result);
   }
 
+  @Get('/:cafeId/review/:reviewId')
+  @UseGuards(TokenAuthGuard)
+  async getOneReview(
+    @AuthUserData() user: User,
+    @Param('cafeId', ParseIntPipe) cafeId: number,
+    @Param('reviewId', ParseIntPipe) reviewId: number,
+  ): Promise<CommonResponseDto<ReviewResponseDto>> {
+    const result = await this.reviewService.getOneReview(user, cafeId, reviewId);
+
+    return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, result);
+  }
+
   // TODO: cafeId를 받아야하나?
   @Put('/:cafeId/review/:reviewId')
   @UseGuards(TokenAuthGuard)

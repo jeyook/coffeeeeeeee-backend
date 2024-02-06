@@ -54,4 +54,18 @@ export class BookmarkService {
 
     await this.bookmarkRepository.save(bookmark);
   }
+
+  async deleteBookmark(user: User, cafeId: number): Promise<void> {
+    const foundBookmark = await this.bookmarkRepository.findOneBy({
+      cafe: {
+        id: cafeId,
+      },
+      user: {
+        id: user.id,
+      },
+    });
+    if (!foundBookmark) throw new NotFoundException('NOT_FOUND_BOOKMARK');
+
+    await this.bookmarkRepository.softRemove(foundBookmark);
+  }
 }
