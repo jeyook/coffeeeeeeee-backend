@@ -56,12 +56,9 @@ export class BookmarkService {
   }
 
   async deleteBookmark(user: User, cafeId: number): Promise<void> {
-    const foundCafe = await this.cafeRepository.findOneBy({ id: cafeId });
-    if (!foundCafe) throw new NotFoundException('NOT_FOUND_CAFE');
-
     const foundBookmark = await this.bookmarkRepository.findOneBy({
       cafe: {
-        id: foundCafe.id,
+        id: cafeId,
       },
       user: {
         id: user.id,
