@@ -47,6 +47,7 @@ export class ReviewController {
   }
 
   @Get('/:cafeId/review')
+  @UseGuards(new TokenAuthGuard({ isTokenOptional: true }))
   async getPaginatedReview(
     @Param('cafeId', ParseIntPipe) cafeId: number,
     @Query() dto: PageRequestDto,
