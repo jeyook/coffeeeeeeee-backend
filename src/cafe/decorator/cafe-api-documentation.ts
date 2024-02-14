@@ -1,8 +1,8 @@
 import { applyDecorators } from '@nestjs/common';
 import {
   ApiBadRequestResponse,
-  ApiFoundResponse,
   ApiNotFoundResponse,
+  ApiOkResponse,
   ApiOperation,
 } from '@nestjs/swagger';
 
@@ -22,7 +22,7 @@ const decorators = {
       summary: 'getCafeById',
       description: 'cafeId로 해당 카페 상세내용을 가져온다',
     }),
-    ApiFoundResponse({
+    ApiOkResponse({
       description: '(mock) 카페 조회 성공 응답값',
       schema: {
         example: {
