@@ -14,6 +14,7 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { FilesInterceptor } from '@nestjs/platform-express';
+import { ApiTags } from '@nestjs/swagger';
 import { AuthUserData } from '../auth/decorator/auth-user-data.decorator';
 import { TokenAuthGuard } from '../auth/token-auth.guard';
 import { CommonResponseDto } from '../common/dto/common-response.dto';
@@ -22,15 +23,18 @@ import { PageResponseDto } from '../common/dto/page-response.dto';
 import { ResponseMessage } from '../common/dto/response-message.enum';
 import { User } from '../entity/user.entity';
 import { ReviewExceptionFilter } from '../filter/review-exception.filter';
+import { ApiDocumentation } from './decorator/review-api-documentation';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewResponseDto } from './dto/review-response.dto';
 import { UpdateReviewDto } from './dto/update-review.dto';
 import { ReviewService } from './review.service';
 
+@ApiTags('review')
 @Controller('/cafe')
 export class ReviewController {
   constructor(private readonly reviewService: ReviewService) {}
 
+  @ApiDocumentation()
   @Post('/:cafeId/review')
   @UseGuards(TokenAuthGuard)
   @UseInterceptors(FilesInterceptor('images'))
@@ -46,6 +50,7 @@ export class ReviewController {
     return CommonResponseDto.successNoContent(ResponseMessage.CREATE_SUCCESS);
   }
 
+  @ApiDocumentation()
   @Get('/:cafeId/review')
   @UseGuards(new TokenAuthGuard({ isTokenOptional: true }))
   async getPaginatedReview(
@@ -58,6 +63,7 @@ export class ReviewController {
     return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, result);
   }
 
+  @ApiDocumentation()
   @Get('/:cafeId/review/:reviewId')
   @UseGuards(TokenAuthGuard)
   async getOneReview(
@@ -71,6 +77,7 @@ export class ReviewController {
   }
 
   // TODO: cafeId를 받아야하나?
+  @ApiDocumentation()
   @Put('/:cafeId/review/:reviewId')
   @UseGuards(TokenAuthGuard)
   @UseInterceptors(FilesInterceptor('images'))
@@ -87,6 +94,7 @@ export class ReviewController {
     return CommonResponseDto.successNoContent(ResponseMessage.UPDATE_SUCCESS);
   }
 
+  @ApiDocumentation()
   @Delete('/:cafeId/review/:reviewId')
   @UseGuards(TokenAuthGuard)
   async deleteReview(
