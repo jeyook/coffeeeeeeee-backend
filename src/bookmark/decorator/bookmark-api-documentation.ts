@@ -7,7 +7,7 @@ import {
   ApiBadRequestResponse,
 } from '@nestjs/swagger';
 
-export function BookmarkApiDocumentation(): MethodDecorator {
+export function ApiDocumentation(): MethodDecorator {
   return (
     target: object,
     key: string | symbol,
