@@ -6,6 +6,7 @@ import {
   Param,
   ParseIntPipe,
   Post,
+  Put,
   Query,
   UploadedFiles,
   UseFilters,
@@ -23,6 +24,7 @@ import { User } from '../entity/user.entity';
 import { ReviewExceptionFilter } from '../filter/review-exception.filter';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { ReviewResponseDto } from './dto/review-response.dto';
+import { UpdateReviewDto } from './dto/update-review.dto';
 import { ReviewService } from './review.service';
 
 @Controller('/cafe')
@@ -66,6 +68,23 @@ export class ReviewController {
     const result = await this.reviewService.getOneReview(user, cafeId, reviewId);
 
     return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, result);
+  }
+
+  // TODO: cafeId를 받아야하나?
+  @Put('/:cafeId/review/:reviewId')
+  @UseGuards(TokenAuthGuard)
+  @UseInterceptors(FilesInterceptor('images'))
+  @UseFilters(ReviewExceptionFilter)
+  async updateReview(
+    @AuthUserData() user: User,
+    @Param('cafeId', ParseIntPipe) cafeId: number,
+    @Param('reviewId', ParseIntPipe) reviewId: number,
+    @UploadedFiles() images: Express.MulterS3.File[],
+    @Body() dto: UpdateReviewDto,
+  ): Promise<CommonResponseDto<void>> {
+    await this.reviewService.updateReview(user, cafeId, reviewId, images, dto);
+
+    return CommonResponseDto.successNoContent(ResponseMessage.UPDATE_SUCCESS);
   }
 
   @Delete('/:cafeId/review/:reviewId')

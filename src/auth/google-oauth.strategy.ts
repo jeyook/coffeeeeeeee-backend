@@ -56,6 +56,6 @@ export class GoogleOAuthStrategy extends PassportStrategy(Strategy, 'google') {
     const user = userDto.toEntity();
     const token = this.authService.sign({ aud: user.id });
 
-    done(null, { token: token });
+    done(null, { ...user, token: token });
   }
 }

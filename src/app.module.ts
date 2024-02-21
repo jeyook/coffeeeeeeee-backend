@@ -12,7 +12,6 @@ import { typeOrmConfig } from './config/type-orm.config';
 import { ReviewModule } from './review/review.module';
 import { SectionModule } from './section/section.module';
 import { UserModule } from './user/user.module';
-import { LikeModule } from './like/like.module';
 
 @Module({
   imports: [
@@ -27,7 +26,6 @@ import { LikeModule } from './like/like.module';
     ReviewModule,
     BookmarkModule,
     SectionModule,
-    LikeModule,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService],

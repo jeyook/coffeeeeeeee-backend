@@ -25,7 +25,8 @@ export class AuthController {
     @AuthUserData() user: { token: string },
     @Res() res: Response,
   ) {
-    return res.send(CommonResponseDto.success(ResponseMessage.LOGIN_SUCCESS, user));
+    res.cookie('token', user.token);
+    res.redirect(process.env.OAUTH_REDIRECT_URL_ON_CLIENT);
   }
 
   @ApiDocumentation()
@@ -36,7 +37,8 @@ export class AuthController {
     @AuthUserData() user: { token: string },
     @Res() res: Response,
   ) {
-    return res.send(CommonResponseDto.success(ResponseMessage.LOGIN_SUCCESS, user));
+    res.cookie('token', user.token);
+    res.redirect(process.env.OAUTH_REDIRECT_URL_ON_CLIENT);
   }
 
   // TODO: logout API 만들기
