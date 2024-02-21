@@ -4,8 +4,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 
 import { AuthUserData } from './decorator/auth-user-data.decorator';
-import { CommonResponseDto } from '../common/dto/common-response.dto';
-import { ResponseMessage } from '../common/dto/response-message.enum';
 
 @Controller('/auth')
 export class AuthController {
@@ -20,7 +18,8 @@ export class AuthController {
     @AuthUserData() user: { token: string },
     @Res() res: Response,
   ) {
-    return res.send(CommonResponseDto.success(ResponseMessage.LOGIN_SUCCESS, user));
+    res.cookie('token', user.token);
+    res.redirect(process.env.OAUTH_REDIRECT_URL_ON_CLIENT);
   }
 
   @Get('/kakao')
@@ -30,6 +29,7 @@ export class AuthController {
     @AuthUserData() user: { token: string },
     @Res() res: Response,
   ) {
-    return res.send(CommonResponseDto.success(ResponseMessage.LOGIN_SUCCESS, user));
+    res.cookie('token', user.token);
+    res.redirect(process.env.OAUTH_REDIRECT_URL_ON_CLIENT);
   }
 }
