@@ -38,9 +38,8 @@ class FilesUploadDto {
   rating: number;
 
   @ApiProperty({
-    description: '내용',
+    description: '내용 (최대 500자)',
     example: '소금빵이 참 맛있네요.',
-    maxLength: 500,
     required: true,
   })
   content: string;
