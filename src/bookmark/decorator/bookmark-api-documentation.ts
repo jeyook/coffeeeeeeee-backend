@@ -55,8 +55,8 @@ const decorators = {
       description: 'Cafe가 존재하지 않을 때 응답값.',
       schema: {
         example: {
-          error: 'Not Found',
           message: 'NOT_FOUND_CAFE',
+          error: 'Not Found',
           statusCode: 404,
         },
       },
@@ -90,8 +90,8 @@ const decorators = {
       description: 'Cafe가 존재하지 않을 때 응답값.',
       schema: {
         example: {
-          error: 'Not Found',
           message: 'NOT_FOUND_CAFE',
+          error: 'Not Found',
           statusCode: 404,
         },
       },
@@ -116,6 +116,7 @@ const decorators = {
       schema: {
         example: {
           statuscode: 404,
+          error: 'Not Found',
           message: 'NOT_FOUND_BOOKMARK',
         },
       },
