@@ -1,5 +1,5 @@
 import { applyDecorators } from '@nestjs/common';
-import { ApiCreatedResponse, ApiFoundResponse, ApiOperation } from '@nestjs/swagger';
+import { ApiCookieAuth, ApiFoundResponse, ApiOperation } from '@nestjs/swagger';
 
 export function ApiDocumentation(): MethodDecorator {
   return (
@@ -16,46 +16,24 @@ const decorators = {
     ApiOperation({
       summary: 'googleOAuth',
       description:
-        'Google OAuth2 로그인을 호출한다. Google OAuth2 로그인이 완료되면 유저정보와 서비스 토큰을 반환한다.',
+        'Google OAuth2 로그인을 호출한다. Google OAuth2 로그인이 완료되면 서비스 토큰을 cookie로 반환한다.',
     }),
+    ApiCookieAuth(),
     ApiFoundResponse({
       status: 302,
-      description: 'Google OAuth2 url로 리디렉션',
-    }),
-    ApiCreatedResponse({
-      description: '유저정보와 서비스 토큰 반환',
-      schema: {
-        example: {
-          statusCode: 200,
-          message: 'LOGIN_SUCCESS',
-          data: {
-            token: 'login_token_keep_it_in_safe_place',
-          },
-        },
-      },
+      description: 'Token을 cookie에 할당하여 main page로 리디렉션',
     }),
   ],
   kakaoOAuth: [
     ApiOperation({
       summary: 'kakaoOAuth',
       description:
-        'Kakao OAuth2 로그인을 호출한다. Kakao OAuth2 로그인이 완료되면 유저정보와 서비스 토큰을 발행한다.',
+        'Kakao OAuth2 로그인을 호출한다. Kakao OAuth2 로그인이 완료되면 서비스 토큰을 cookie로 발행한다.',
     }),
+    ApiCookieAuth(),
     ApiFoundResponse({
       status: 302,
-      description: 'Kakao OAuth2 url로 리디렉션',
-    }),
-    ApiCreatedResponse({
-      description: '유저정보와 서비스 토큰 반환',
-      schema: {
-        example: {
-          statusCode: 200,
-          message: 'LOGIN_SUCCESS',
-          data: {
-            token: 'login_token_keep_it_in_safe_place',
-          },
-        },
-      },
+      description: 'Token을 cookie에 할당하여 main page로 리디렉션',
     }),
   ],
 };

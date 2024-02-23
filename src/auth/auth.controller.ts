@@ -4,8 +4,6 @@ import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 
 import { AuthUserData } from './decorator/auth-user-data.decorator';
-import { CommonResponseDto } from '../common/dto/common-response.dto';
-import { ResponseMessage } from '../common/dto/response-message.enum';
 import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
 import { ApiDocumentation } from './decorator/auth-api-documentation';
 
