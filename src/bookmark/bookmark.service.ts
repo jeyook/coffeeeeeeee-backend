@@ -24,7 +24,7 @@ export class BookmarkService {
     const offset = dto.getOffset();
     const [foundBookmarks, foundBookmarkTotalCount] = await this.bookmarkRepository.findAndCount({
       where: {
-        user: user,
+        user: { id: user.id },
       },
       take: limit,
       skip: offset,
@@ -35,6 +35,7 @@ export class BookmarkService {
     const bookmarkResponseDtos = foundBookmarks.map(
       (foundBookmark) => new BookmarkResponseDto(foundBookmark),
     );
+
     return new PageResponseDto<BookmarkResponseDto>(
       currentPage,
       foundBookmarkTotalCount,

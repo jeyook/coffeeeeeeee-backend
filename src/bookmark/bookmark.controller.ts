@@ -29,6 +29,7 @@ export class BookmarkController {
     @Query() dto: PageRequestDto,
   ): Promise<CommonResponseDto<PageResponseDto<BookmarkResponseDto>>> {
     const result = await this.bookmarkService.getPaginatedBookmark(user, dto);
+
     return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, result);
   }
 
