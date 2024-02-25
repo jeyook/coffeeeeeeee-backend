@@ -18,10 +18,15 @@ import { ResponseMessage } from '../common/dto/response-message.enum';
 import { PageRequestDto } from '../common/dto/page-request.dto';
 import { PageResponseDto } from 'src/common/dto/page-response.dto';
 import { BookmarkResponseDto } from './dto/bookmark-resposnse.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { ApiDocumentation } from './decorator/bookmark-api-documentation';
 
+@ApiTags('bookmark')
 @Controller('/bookmark')
 export class BookmarkController {
   constructor(private bookmarkService: BookmarkService) {}
+
+  @ApiDocumentation()
   @Get()
   @UseGuards(TokenAuthGuard)
   async getPaginatedBookmark(
@@ -33,6 +38,7 @@ export class BookmarkController {
     return CommonResponseDto.success(ResponseMessage.READ_SUCCESS, result);
   }
 
+  @ApiDocumentation()
   @Post()
   @UseGuards(TokenAuthGuard)
   async createBookmark(
@@ -44,6 +50,7 @@ export class BookmarkController {
     return CommonResponseDto.successNoContent(ResponseMessage.CREATE_SUCCESS);
   }
 
+  @ApiDocumentation()
   @Delete('/:cafeId')
   @UseGuards(TokenAuthGuard)
   async deleteBookmark(
