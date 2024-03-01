@@ -15,6 +15,7 @@ describe('BookmarkController', () => {
   const mockBookmarkService = {
     createBookmark: jest.fn(),
     getPaginatedBookmark: jest.fn(),
+    deleteBookmark: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -113,6 +114,30 @@ describe('BookmarkController', () => {
         mockUser,
         mockPageRequestDto,
       );
+    });
+  });
+
+  describe('deleteBookmark()', () => {
+    const mockUser = {
+      id: 1,
+      nickname: '테스트',
+      email: 'test@test.com',
+      socialId: 'test1234',
+    };
+    const mockCafeId = 1;
+    const mockCafe = {
+      id: 1,
+      name: '테스트 카페',
+    };
+    const mockBookmarkResponseDto = {
+      //mock data 작성
+      user: mockUser,
+      cafe: mockCafe,
+    };
+
+    it('SUCCESS : 북마크를 정상적으로 조회.', async () => {
+      const spyDeleteBookmarkFn = jest.spyOn(mockBookmarkService, 'deleteBookmark');
+      spyDeleteBookmarkFn.mockResolvedValueOnce(mockBookmarkResponseDto);
     });
   });
 });
