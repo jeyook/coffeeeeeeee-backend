@@ -135,9 +135,17 @@ describe('BookmarkController', () => {
       cafe: mockCafe,
     };
 
-    it('SUCCESS : 북마크를 정상적으로 조회.', async () => {
+    it('SUCCESS: 북마크를 정상적으로 삭제', async () => {
+      // Given
       const spyDeleteBookmarkFn = jest.spyOn(mockBookmarkService, 'deleteBookmark');
-      spyDeleteBookmarkFn.mockResolvedValueOnce(mockBookmarkResponseDto);
+      spyDeleteBookmarkFn.mockResolvedValueOnce({ affected: 1 });
+
+      // When
+      const result = await mockBookmarkService.deleteBookmark(mockUser as User, mockCafeId);
+
+      // Then
+      expect(result).toBeUndefined();
+      expect(spyDeleteBookmarkFn).toHaveBeenCalledTimes(1);
     });
   });
 });
