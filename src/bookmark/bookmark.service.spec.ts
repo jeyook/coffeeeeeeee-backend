@@ -14,6 +14,7 @@ describe('BookmarkService', () => {
     save: jest.fn(),
     create: jest.fn(),
     findAndCount: jest.fn(),
+    delete: jest.fn(),
   };
   const mockCafeRepository = {
     findOneBy: jest.fn(),
@@ -181,6 +182,49 @@ describe('BookmarkService', () => {
         },
         take: mockPageRequestDto.getLimit(),
         skip: mockPageRequestDto.getOffset(),
+      });
+    });
+  });
+
+  describe('deleteBookmark()', () => {
+    const mockUser = {
+      id: 1,
+      nickname: '테스트',
+      email: 'test@test.com',
+      socialId: 'test1234',
+    };
+    const mockCafeId = 1;
+
+    const mockCafe = {
+      id: 1,
+      placeId: 1,
+      address: '주소',
+      name: '목카페',
+      mapX: 123,
+      mapY: 456,
+      phoneNumber: '010-1234-5678',
+      imageUrl: 'https://image.imgage',
+      homepageUrl: 'https://homepage.homepage',
+    };
+    const mockBookmarkResponseDto = {
+      user: mockUser,
+      cafe: mockCafe,
+    };
+
+    it('SUCCESS : 북마크를 정상적으로 삭제.', async () => {
+      // Given
+      const spyDeleteBookmarkFn = jest.spyOn(mockBookmarkRepository, 'delete');
+      spyDeleteBookmarkFn.mockResolvedValueOnce(mockBookmarkResponseDto);
+
+      // When
+      const result = await bookmarkService.deleteBookmark(mockUser as User, mockCafeId);
+
+      // Then
+      expect(result).toBeUndefined();
+      expect(spyDeleteBookmarkFn).toHaveBeenCalledTimes(1);
+      expect(spyDeleteBookmarkFn).toHaveBeenCalledWith({
+        user: mockUser,
+        cafe: { id: mockCafeId },
       });
     });
   });
