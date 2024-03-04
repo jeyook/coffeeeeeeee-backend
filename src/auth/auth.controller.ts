@@ -4,15 +4,18 @@ import { AuthGuard } from '@nestjs/passport';
 import { Response } from 'express';
 
 import { AuthUserData } from './decorator/auth-user-data.decorator';
-import { CommonResponseDto } from '../common/dto/common-response.dto';
-import { ResponseMessage } from '../common/dto/response-message.enum';
+import { ApiExcludeEndpoint, ApiTags } from '@nestjs/swagger';
+import { ApiDocumentation } from './decorator/auth-api-documentation';
 
+@ApiTags('auth')
 @Controller('/auth')
 export class AuthController {
+  @ApiDocumentation()
   @Get('/google')
   @UseGuards(AuthGuard('google'))
   async googleOAuth() {}
 
+  @ApiExcludeEndpoint() // not allowed to direct call
   @Get('/google/callback')
   @UseGuards(AuthGuard('google'))
   async googleOAuthCallback(
@@ -20,9 +23,11 @@ export class AuthController {
     @AuthUserData() user: { token: string },
     @Res() res: Response,
   ) {
-    return res.send(CommonResponseDto.success(ResponseMessage.LOGIN_SUCCESS, user));
+    res.cookie('token', user.token);
+    res.redirect(process.env.OAUTH_REDIRECT_URL_ON_CLIENT);
   }
 
+  @ApiDocumentation()
   @Get('/kakao')
   @UseGuards(AuthGuard('kakao'))
   async kakaoOAuth(
@@ -30,6 +35,9 @@ export class AuthController {
     @AuthUserData() user: { token: string },
     @Res() res: Response,
   ) {
-    return res.send(CommonResponseDto.success(ResponseMessage.LOGIN_SUCCESS, user));
+    res.cookie('token', user.token);
+    res.redirect(process.env.OAUTH_REDIRECT_URL_ON_CLIENT);
   }
+
+  // TODO: logout API 만들기
 }

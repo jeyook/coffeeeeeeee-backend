@@ -24,7 +24,7 @@ export class BookmarkService {
     const offset = dto.getOffset();
     const [foundBookmarks, foundBookmarkTotalCount] = await this.bookmarkRepository.findAndCount({
       where: {
-        user: user,
+        user: { id: user.id },
       },
       take: limit,
       skip: offset,
@@ -35,6 +35,7 @@ export class BookmarkService {
     const bookmarkResponseDtos = foundBookmarks.map(
       (foundBookmark) => new BookmarkResponseDto(foundBookmark),
     );
+
     return new PageResponseDto<BookmarkResponseDto>(
       currentPage,
       foundBookmarkTotalCount,
@@ -53,5 +54,19 @@ export class BookmarkService {
     });
 
     await this.bookmarkRepository.save(bookmark);
+  }
+
+  async deleteBookmark(user: User, cafeId: number): Promise<void> {
+    const foundBookmark = await this.bookmarkRepository.findOneBy({
+      cafe: {
+        id: cafeId,
+      },
+      user: {
+        id: user.id,
+      },
+    });
+    if (!foundBookmark) throw new NotFoundException('NOT_FOUND_BOOKMARK');
+
+    await this.bookmarkRepository.softRemove(foundBookmark);
   }
 }

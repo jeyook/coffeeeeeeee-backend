@@ -1,6 +1,7 @@
 import { BadRequestException, HttpStatus, NotFoundException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { getRepositoryToken } from '@nestjs/typeorm';
+import { DataSource } from 'typeorm';
 import { PageRequestDto } from '../common/dto/page-request.dto';
 import { Cafe } from '../entity/cafe.entity';
 import { Review } from '../entity/review.entity';
@@ -22,6 +23,9 @@ describe('ReviewService', () => {
   const mockTagRepository = {
     findOneBy: jest.fn(),
   };
+  const mockDataSource = {
+    transaction: jest.fn(),
+  };
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -38,6 +42,10 @@ describe('ReviewService', () => {
         {
           provide: getRepositoryToken(Tag),
           useValue: mockTagRepository,
+        },
+        {
+          provide: DataSource,
+          useValue: mockDataSource,
         },
       ],
     }).compile();

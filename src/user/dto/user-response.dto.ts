@@ -24,15 +24,17 @@ export class UserResponseDto {
   private deletedAt: Date;
 
   constructor(user: User) {
-    this.id = user.id;
-    this.nickname = user.nickname;
-    this.email = user.email;
-    this.socialId = user.socialId;
-    this.provider = this.mapProviderToDto(user.provider);
-    this.userRole = this.mapUserRoleToDto(user.userRole);
-    this.createdAt = user.createdAt;
-    this.updatedAt = user.updatedAt;
-    this.deletedAt = user.deletedAt;
+    if (user) {
+      this.id = user.id;
+      this.nickname = user.nickname;
+      this.email = user.email;
+      this.socialId = user.socialId;
+      this.provider = this.mapProviderToDto(user.provider);
+      this.userRole = this.mapUserRoleToDto(user.userRole);
+      this.createdAt = user.createdAt;
+      this.updatedAt = user.updatedAt;
+      this.deletedAt = user.deletedAt;
+    }
   }
 
   private mapProviderToDto = (provider: Provider) => provider;
@@ -40,6 +42,7 @@ export class UserResponseDto {
 
   toEntity(): User {
     const user = new User();
+    user.id = this.id;
     user.email = this.email;
     user.nickname = this.nickname;
     user.provider = this.provider;
