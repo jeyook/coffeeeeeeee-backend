@@ -14,6 +14,7 @@ describe('BookmarkService', () => {
     save: jest.fn(),
     create: jest.fn(),
     findAndCount: jest.fn(),
+    findOneBy: jest.fn(),
     delete: jest.fn(),
   };
   const mockCafeRepository = {
@@ -242,8 +243,9 @@ describe('BookmarkService', () => {
     it('SUCCESS : 북마크를 정상적으로 삭제.', async () => {
       // Given
       const spyDeleteBookmarkFn = jest.spyOn(mockBookmarkRepository, 'delete');
-      spyDeleteBookmarkFn.mockResolvedValueOnce(mockBookmarkResponseDto);
+      spyDeleteBookmarkFn.mockResolvedValueOnce(Promise.resolve({ affected: 1 }));
 
+      console.log('ok: ');
       // When
       const result = await bookmarkService.deleteBookmark(mockUser as User, mockCafeId);
 
@@ -256,9 +258,9 @@ describe('BookmarkService', () => {
       });
     });
 
-    it('FAILURE: 삭제할 카페가 존재하지 않으면 Not Found Exception을 반환한다.', async () => {
+    it('FAILURE: 삭제할 북마크가 존재하지 않으면 Not Found Exception을 반환한다.', async () => {
       // Given
-      const spyBookmarkFindOneByFn = jest.spyOn(mockCafeRepository, 'findOneBy');
+      const spyBookmarkFindOneByFn = jest.spyOn(mockBookmarkRepository, 'findOneBy');
       spyBookmarkFindOneByFn.mockReturnValueOnce(undefined);
 
       // When
