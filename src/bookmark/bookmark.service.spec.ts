@@ -245,7 +245,6 @@ describe('BookmarkService', () => {
       const spyDeleteBookmarkFn = jest.spyOn(mockBookmarkRepository, 'delete');
       spyDeleteBookmarkFn.mockResolvedValueOnce(Promise.resolve({ affected: 1 }));
 
-      console.log('ok: ');
       // When
       const result = await bookmarkService.deleteBookmark(mockUser as User, mockCafeId);
 
