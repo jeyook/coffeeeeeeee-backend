@@ -186,7 +186,7 @@ describe('BookmarkService', () => {
       });
     });
 
-    it('FAILURE: 검색할 북마크가 존재하지 않으면 Bad Request Exception을 반환한다.', async () => {
+    it('FAILURE: 페이지 범위를 벗어난 경우 Bad Request Exception을 반환한다.', async () => {
       // Given
       mockBookmarkTotalCount = 10;
       const spyBookmarkFindAndCountFn = jest.spyOn(mockBookmarkRepository, 'findAndCount');
