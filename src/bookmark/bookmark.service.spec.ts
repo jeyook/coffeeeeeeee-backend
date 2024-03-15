@@ -15,7 +15,7 @@ describe('BookmarkService', () => {
     create: jest.fn(),
     findAndCount: jest.fn(),
     findOneBy: jest.fn(),
-    delete: jest.fn(),
+    remove: jest.fn(),
   };
   const mockCafeRepository = {
     findOneBy: jest.fn(),
@@ -245,7 +245,7 @@ describe('BookmarkService', () => {
       const spyFindOneByFn = jest.spyOn(mockBookmarkRepository, 'findOneBy');
       spyFindOneByFn.mockResolvedValueOnce(mockBookmarkResponseDto);
 
-      const spyDeleteBookmarkFn = jest.spyOn(mockBookmarkRepository, 'delete');
+      const spyDeleteBookmarkFn = jest.spyOn(mockBookmarkRepository, 'remove');
       spyDeleteBookmarkFn.mockResolvedValueOnce(Promise.resolve({ affected: 1 }));
 
       // When
