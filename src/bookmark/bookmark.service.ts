@@ -66,7 +66,6 @@ export class BookmarkService {
       },
     });
     if (!foundBookmark) throw new NotFoundException('NOT_FOUND_BOOKMARK');
-
-    await this.bookmarkRepository.softRemove(foundBookmark);
+    await this.bookmarkRepository.delete(foundBookmark);
   }
 }

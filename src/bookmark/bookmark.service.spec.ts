@@ -4,7 +4,7 @@ import { BookmarkService } from './bookmark.service';
 import { Bookmark } from '../entity/bookmark.entity';
 import { Cafe } from '../entity/cafe.entity';
 import { User } from '../entity/user.entity';
-import { HttpStatus, NotFoundException } from '@nestjs/common';
+import { BadRequestException, HttpStatus, NotFoundException } from '@nestjs/common';
 import { PageRequestDto } from '../common/dto/page-request.dto';
 
 describe('BookmarkService', () => {
@@ -14,6 +14,8 @@ describe('BookmarkService', () => {
     save: jest.fn(),
     create: jest.fn(),
     findAndCount: jest.fn(),
+    findOneBy: jest.fn(),
+    remove: jest.fn(),
   };
   const mockCafeRepository = {
     findOneBy: jest.fn(),
@@ -182,6 +184,104 @@ describe('BookmarkService', () => {
         take: mockPageRequestDto.getLimit(),
         skip: mockPageRequestDto.getOffset(),
       });
+    });
+
+    it('FAILURE: 페이지 범위를 벗어난 경우 Bad Request Exception을 반환한다.', async () => {
+      // Given
+      mockBookmarkTotalCount = 10;
+      const spyBookmarkFindAndCountFn = jest.spyOn(mockBookmarkRepository, 'findAndCount');
+      spyBookmarkFindAndCountFn.mockResolvedValueOnce([mockBookmarks, mockBookmarkTotalCount]);
+
+      // When
+      let hasThrown = false;
+      try {
+        await bookmarkService.getPaginatedBookmark(
+          mockUser as User,
+          mockPageRequestDto as PageRequestDto,
+        );
+
+        // Then
+      } catch (error) {
+        hasThrown = true;
+        expect(error).toBeInstanceOf(BadRequestException);
+        expect(error.getStatus()).toEqual(HttpStatus.BAD_REQUEST);
+        expect(error.getResponse()).toEqual({
+          error: 'Bad Request',
+          message: 'PAGE_OUT_OF_RANGE',
+          statusCode: 400,
+        });
+      }
+      expect(hasThrown).toBeTruthy();
+    });
+  });
+
+  describe('deleteBookmark()', () => {
+    const mockUser = {
+      id: 1,
+      nickname: '테스트',
+      email: 'test@test.com',
+      socialId: 'test1234',
+    };
+    const mockCafeId = 1;
+
+    const mockCafe = {
+      id: 1,
+      placeId: 1,
+      address: '주소',
+      name: '목카페',
+      mapX: 123,
+      mapY: 456,
+      phoneNumber: '010-1234-5678',
+      imageUrl: 'https://image.imgage',
+      homepageUrl: 'https://homepage.homepage',
+    };
+    const mockBookmarkResponseDto = {
+      user: mockUser,
+      cafe: mockCafe,
+    };
+
+    it('SUCCESS : 북마크를 정상적으로 삭제.', async () => {
+      // Given
+      const spyFindOneByFn = jest.spyOn(mockBookmarkRepository, 'findOneBy');
+      spyFindOneByFn.mockResolvedValueOnce(mockBookmarkResponseDto);
+
+      const spyDeleteBookmarkFn = jest.spyOn(mockBookmarkRepository, 'remove');
+      spyDeleteBookmarkFn.mockResolvedValueOnce(Promise.resolve({ affected: 1 }));
+
+      // When
+      const result = await bookmarkService.deleteBookmark(mockUser as User, mockCafeId);
+
+      // Then
+      expect(result).toBeUndefined();
+      expect(spyDeleteBookmarkFn).toHaveBeenCalledTimes(1);
+      expect(spyDeleteBookmarkFn).toHaveBeenCalledWith({
+        user: mockUser,
+        cafe: mockCafe,
+      });
+    });
+
+    it('FAILURE: 삭제할 북마크가 존재하지 않으면 Not Found Exception을 반환한다.', async () => {
+      // Given
+      const spyBookmarkFindOneByFn = jest.spyOn(mockBookmarkRepository, 'findOneBy');
+      spyBookmarkFindOneByFn.mockReturnValueOnce(undefined);
+
+      // When
+      let hasThrown = false;
+      try {
+        await bookmarkService.deleteBookmark(mockUser as User, mockCafeId);
+
+        // Then
+      } catch (error) {
+        hasThrown = true;
+        expect(error).toBeInstanceOf(NotFoundException);
+        expect(error.getStatus()).toEqual(HttpStatus.NOT_FOUND);
+        expect(error.getResponse()).toEqual({
+          error: 'Not Found',
+          message: 'NOT_FOUND_BOOKMARK',
+          statusCode: 404,
+        });
+      }
+      expect(hasThrown).toBeTruthy();
     });
   });
 });
