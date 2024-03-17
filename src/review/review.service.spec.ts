@@ -16,6 +16,8 @@ describe('ReviewService', () => {
   const mockReviewRepository = {
     save: jest.fn(),
     findAndCount: jest.fn(),
+    findOneBy: jest.fn(),
+    softRemove: jest.fn(),
   };
   const mockCafeRepository = {
     findOneBy: jest.fn(),
@@ -369,6 +371,130 @@ describe('ReviewService', () => {
           error: 'Bad Request',
           message: 'PAGE_OUT_OF_RANGE',
           statusCode: 400,
+        });
+      }
+      expect(hasThrown).toBeTruthy();
+    });
+  });
+
+  describe('deleteReview()', () => {
+    const mockUser = {
+      id: 1,
+      nickname: '테스트',
+      email: 'test@test.com',
+      socialId: 'test1234',
+    };
+    const mockCafeId = 1;
+    const mockReviewId = 1;
+    const mockCafe = {
+      id: mockCafeId,
+      placeId: 1,
+      address: '주소',
+      name: '목카페',
+      mapX: 123,
+      mapY: 456,
+      phoneNumber: '010-1234-5678',
+      imageUrl: 'https://image.imgage',
+      homepageUrl: 'https://homepage.homepage',
+    };
+    const mockReview = {
+      id: 1,
+      rating: 1,
+      content: '테스트입니다.',
+      user: {
+        id: 1,
+        nickname: '테스트',
+      },
+      reviewImages: [
+        {
+          id: 1,
+          url: 'test',
+        },
+      ],
+      reviewTags: [
+        {
+          tag: {
+            id: 1,
+            name: '목태그',
+          },
+        },
+      ],
+    };
+
+    it('SUCCESS: 리뷰를 정상적으로 삭제한다.', async () => {
+      // Given
+      const spyCafeFindOneByFn = jest.spyOn(mockCafeRepository, 'findOneBy');
+      spyCafeFindOneByFn.mockResolvedValueOnce(mockCafe);
+      const spyReviewFindOneByFn = jest.spyOn(mockReviewRepository, 'findOneBy');
+      spyReviewFindOneByFn.mockResolvedValueOnce(mockReview);
+      const spyReviewSoftRemoveFn = jest.spyOn(mockReviewRepository, 'softRemove');
+
+      // When
+      const result = await reviewService.deleteReview(mockUser as User, mockCafeId, mockReviewId);
+
+      // Then
+      expect(result).toBeUndefined();
+      expect(spyCafeFindOneByFn).toHaveBeenCalledTimes(1);
+      expect(spyCafeFindOneByFn).toHaveBeenCalledWith({ id: mockCafeId });
+      expect(spyReviewFindOneByFn).toHaveBeenCalledTimes(1);
+      expect(spyReviewFindOneByFn).toHaveBeenCalledWith({
+        id: mockReviewId,
+        cafe: {
+          id: mockCafe.id,
+        },
+        user: {
+          id: mockUser.id,
+        },
+      });
+      expect(spyReviewSoftRemoveFn).toHaveBeenCalledTimes(1);
+      expect(spyReviewSoftRemoveFn).toHaveBeenCalledWith(mockReview);
+    });
+
+    it('FAILURE: 검색할 카페가 존재하지 않으면 Not Found Exception을 반환한다.', async () => {
+      // Given
+      const spyCafeFindOneByFn = jest.spyOn(mockCafeRepository, 'findOneBy');
+      spyCafeFindOneByFn.mockResolvedValueOnce(null);
+
+      // When
+      let hasThrown = false;
+      try {
+        await reviewService.deleteReview(mockUser as User, mockCafeId, mockReviewId);
+
+        // Then
+      } catch (error) {
+        hasThrown = true;
+        expect(error).toBeInstanceOf(NotFoundException);
+        expect(error.getStatus()).toEqual(HttpStatus.NOT_FOUND);
+        expect(error.getResponse()).toEqual({
+          error: 'Not Found',
+          message: 'NOT_FOUND_CAFE',
+          statusCode: 404,
+        });
+      }
+      expect(hasThrown).toBeTruthy();
+    });
+
+    it('FAILURE: 검색할 리뷰가 존재하지 않으면 Not Found Exception을 반환한다.', async () => {
+      // Given
+      const spyCafeFindOneByFn = jest.spyOn(mockCafeRepository, 'findOneBy');
+      spyCafeFindOneByFn.mockResolvedValueOnce(mockCafe);
+      const spyTagFindOneByFn = jest.spyOn(mockReviewRepository, 'findOneBy');
+      spyTagFindOneByFn.mockResolvedValueOnce(null);
+
+      // When
+      let hasThrown = false;
+      try {
+        await reviewService.deleteReview(mockUser as User, mockCafeId, mockReviewId);
+
+        // Then
+      } catch (error) {
+        hasThrown = true;
+        expect(error).toBeInstanceOf(NotFoundException);
+        expect(error.getStatus()).toEqual(HttpStatus.NOT_FOUND);
+        expect(error.getResponse()).toEqual({
+          error: 'Not Found',
+          message: 'NOT_FOUND_REVIEW',
+          statusCode: 404,
         });
       }
       expect(hasThrown).toBeTruthy();
