@@ -4,6 +4,7 @@ import { PageRequestDto } from '../common/dto/page-request.dto';
 import { Review } from '../entity/review.entity';
 import { User } from '../entity/user.entity';
 import { CreateReviewDto } from './dto/create-review.dto';
+import { ReviewResponseDto } from './dto/review-response.dto';
 import { ReviewController } from './review.controller';
 import { ReviewService } from './review.service';
 
@@ -13,6 +14,7 @@ describe('ReviewController', () => {
   const mockReviewService = {
     createReview: jest.fn(),
     getPaginatedReview: jest.fn(),
+    getOneReview: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -178,6 +180,65 @@ describe('ReviewController', () => {
         mockPageRequestDto,
         mockUser,
       );
+    });
+  });
+
+  describe('getOneReview()', () => {
+    const mockCafeId = 1;
+    const mockReviewId = 1;
+    const mockUser = {
+      id: 1,
+      nickname: '테스트',
+      email: 'test@test.com',
+      socialId: 'test1234',
+    };
+    const mockReview = {
+      id: 1,
+      rating: 1,
+      content: '테스트입니다.',
+      user: {
+        id: 1,
+        nickname: '테스트',
+      },
+      reviewImages: [
+        {
+          id: 1,
+          url: 'test',
+        },
+      ],
+      reviewTags: [
+        {
+          tag: {
+            id: 1,
+            name: '목태그',
+          },
+        },
+      ],
+    };
+    const mockReviewResponseDto = new ReviewResponseDto(mockReview as Review, mockUser as User);
+
+    it('SUCCESS: 리뷰를 정상적으로 개별 조회한다.', async () => {
+      // Given
+      const spyGetOneReviewFn = jest.spyOn(mockReviewService, 'getOneReview');
+      spyGetOneReviewFn.mockResolvedValueOnce(mockReviewResponseDto);
+
+      const expectedResult = {
+        message: 'READ_SUCCESS',
+        statusCode: 200,
+        data: mockReviewResponseDto,
+      };
+
+      // When
+      const result = await reviewController.getOneReview(
+        mockUser as User,
+        mockCafeId,
+        mockReviewId,
+      );
+
+      // Then
+      expect(result).toEqual(expectedResult);
+      expect(spyGetOneReviewFn).toHaveBeenCalledTimes(1);
+      expect(spyGetOneReviewFn).toHaveBeenCalledWith(mockUser as User, mockCafeId, mockReviewId);
     });
   });
 });
