@@ -1,11 +1,11 @@
 import { BadRequestException, Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { PageRequestDto } from '../common/dto/page-request.dto';
+import { PageResponseDto } from '../common/dto/page-response.dto';
 import { Bookmark } from '../entity/bookmark.entity';
 import { Cafe } from '../entity/cafe.entity';
 import { User } from '../entity/user.entity';
-import { PageRequestDto } from '../common/dto/page-request.dto';
-import { PageResponseDto } from '../common/dto/page-response.dto';
 import { BookmarkResponseDto } from './dto/bookmark-resposnse.dto';
 
 @Injectable()
@@ -66,6 +66,6 @@ export class BookmarkService {
       },
     });
     if (!foundBookmark) throw new NotFoundException('NOT_FOUND_BOOKMARK');
-    await this.bookmarkRepository.delete(foundBookmark);
+    await this.bookmarkRepository.remove(foundBookmark);
   }
 }

@@ -4,6 +4,7 @@ import { PageRequestDto } from '../common/dto/page-request.dto';
 import { Review } from '../entity/review.entity';
 import { User } from '../entity/user.entity';
 import { CreateReviewDto } from './dto/create-review.dto';
+import { UpdateReviewDto } from './dto/update-review.dto';
 import { ReviewController } from './review.controller';
 import { ReviewService } from './review.service';
 
@@ -13,6 +14,7 @@ describe('ReviewController', () => {
   const mockReviewService = {
     createReview: jest.fn(),
     getPaginatedReview: jest.fn(),
+    updateReview: jest.fn(),
     deleteReview: jest.fn(),
   };
 
@@ -70,7 +72,6 @@ describe('ReviewController', () => {
     it('SUCCESS: 리뷰를 정상적으로 생성한다.', async () => {
       // Given
       const spyCreateReviewFn = jest.spyOn(mockReviewService, 'createReview');
-      spyCreateReviewFn.mockResolvedValueOnce(null);
 
       const expectedResult = {
         message: 'CREATE_SUCCESS',
@@ -178,6 +179,62 @@ describe('ReviewController', () => {
         mockCafeId,
         mockPageRequestDto,
         mockUser,
+      );
+    });
+  });
+
+  describe('updateReview()', () => {
+    const mockCafeId = 1;
+    const mockUser = {
+      id: 1,
+      nickname: '테스트',
+      email: 'test@test.com',
+      socialId: 'test1234',
+    };
+    const mockReviewId = 1;
+    const mockImages = [
+      {
+        location: 'test',
+        etag: 'test',
+        stream: null,
+        destination: 'test',
+        filename: 'test',
+        path: 'test',
+      },
+    ];
+    const mockUpdateReviewDto = {
+      rating: 1,
+      content: '테스트입니다.',
+      tagIds: [1],
+    };
+
+    it('SUCCESS: 리뷰를 정상적으로 수정한다.', async () => {
+      // Given
+      const spyUpdateReviewFn = jest.spyOn(mockReviewService, 'updateReview');
+
+      const expectedResult = {
+        message: 'UPDATE_SUCCESS',
+        statusCode: 200,
+      };
+
+      // When
+      const result = await reviewController.updateReview(
+        mockUser as User,
+        mockCafeId,
+        mockReviewId,
+        mockImages as Express.MulterS3.File[],
+        mockUpdateReviewDto as UpdateReviewDto,
+      );
+
+      // Then
+      expect(result).toEqual(expectedResult);
+      expect(spyUpdateReviewFn).toHaveBeenCalledTimes(1);
+      expect(spyUpdateReviewFn).toHaveBeenCalledWith(
+        mockUser,
+        mockCafeId,
+        mockReviewId,
+        mockImages,
+        mockUpdateReviewDto,
       );
     });
   });
