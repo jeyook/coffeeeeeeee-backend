@@ -15,6 +15,7 @@ describe('ReviewController', () => {
     createReview: jest.fn(),
     getPaginatedReview: jest.fn(),
     updateReview: jest.fn(),
+    deleteReview: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -235,6 +236,39 @@ describe('ReviewController', () => {
         mockImages,
         mockUpdateReviewDto,
       );
+    });
+  });
+
+  describe('deleteReview()', () => {
+    const mockCafeId = 1;
+    const mockReviewId = 1;
+
+    it('SUCCESS: 리뷰를 정상적으로 삭제한다.', async () => {
+      // Given
+      const mockUser = {
+        id: 1,
+        nickname: '테스트',
+        email: 'test@test.com',
+        socialId: 'test1234',
+      };
+      const spyDeleteReviewFn = jest.spyOn(mockReviewService, 'deleteReview');
+
+      const expectedResult = {
+        message: 'DELETE_SUCCESS',
+        statusCode: 200,
+      };
+
+      // When
+      const result = await reviewController.deleteReview(
+        mockUser as User,
+        mockCafeId,
+        mockReviewId,
+      );
+
+      // Then
+      expect(result).toEqual(expectedResult);
+      expect(spyDeleteReviewFn).toHaveBeenCalledTimes(1);
+      expect(spyDeleteReviewFn).toHaveBeenCalledWith(mockUser, mockCafeId, mockReviewId);
     });
   });
 });
